@@ -17,7 +17,8 @@
   },
   "lint": {
     "include": [
-      "deno:/https/esm.town/**/*"
+      "**/*.ts",
+      "**/*.tsx"
     ],
     "rules": {
       "exclude": [

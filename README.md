@@ -1,48 +1,77 @@
 # Tijs.org React Website
 
-A React version of the tijs.org website, optimized for hosting on val.town.
-
-## Structure
-
-- `index.html` - Main HTML file with React app container
-- `index.tsx` - React app entry point
-- `App.tsx` - Main app component with global styles
-- `components/` - Individual React components:
-  - `ProfileHeader.tsx` - Header with profile image and intro
-  - `AppsSection.tsx` - Showcases personal apps
-  - `OpenSourceSection.tsx` - Open source contributions
-  - `ExternalLinks.tsx` - Social and contact links
+A modern React website for tijs.org with server-side rendering, optimized for
+hosting on val.town.
 
 ## Features
 
-- 📱 Responsive design
-- 🎨 Custom styling with CSS-in-JS
-- ⚡ Fast loading with ESM imports
-- 🔗 External links to projects and profiles
-- 🎯 Optimized for val.town hosting
+- 📱 **Responsive Design** - Grid layouts optimized for desktop (3 columns) and
+  mobile (1 column)
+- 📝 **Dynamic Blog Posts** - Fetches latest posts from Leaflet publication JSON
+  feed
+- 📚 **AT Protocol Integration** - Displays book updates from Bookhive via AT
+  Protocol records
+- ⚡ **Server-Side Rendering** - Fast initial page loads with React SSR
+- 🗃️ **Smart Caching** - 1-hour server-side cache for external data sources
+- 🎨 **Component-Based Architecture** - Clean, reusable React components
+- 🔧 **Environment Configuration** - Configurable via environment variables
 
-## Val.town Deployment
+## Structure
 
-1. Upload all files to your val.town project
-2. Set `index.html` as your main file
-3. The site will automatically serve the React components
+- `index.tsx` - Main server handler with SSR, data fetching, and caching
+- `App.tsx` - Root app component with global styles
+- `components/` - Reusable React components:
+  - `ProfileHeader.tsx` - Profile image and personal info
+  - `PostsSection.tsx` - Latest blog posts with Leaflet theme
+  - `BookSection.tsx` - Recent book updates with Bookhive theme
+  - `AppsSection.tsx` - Personal app showcase
+  - `OpenSourceSection.tsx` - GitHub project highlights
+  - `ExternalLinks.tsx` - Social media and contact links
 
-## Local Development
+## Environment Variables
 
-If you want to test locally:
+Configure these in your val.town environment:
+
+- `ATPROTO_HANDLE` - Your AT Protocol handle for book records (default:
+  "tijs.org")
+- `LEAFLET_PUB_JSON` - Your Leaflet publication JSON feed URL (default:
+  "https://tijs.leaflet.pub/json")
+
+## Data Sources
+
+- **Blog Posts**: Fetched from Leaflet publication JSON feed
+- **Book Updates**: Retrieved via AT Protocol from Bookhive records
+- **GitHub Projects**: Curated list with links to repositories
+- **Apps**: Static showcase of personal applications
+
+## Deployment
+
+Uses Deno with automated deployment:
 
 ```bash
-npm install
-npm run dev
+deno task deploy  # Runs lint, format, and val.town push
 ```
 
-## Styling
+## Tech Stack
 
-The site uses a pink/magenta color scheme matching the original:
+- **React 18** with server-side rendering
+- **Deno** runtime environment
+- **AT Protocol API** for decentralized data
+- **TypeScript** for type safety
+- **CSS-in-JS** for component styling
+- **Val.town** for hosting and deployment
 
-- Primary: `#ff69ad`
-- Secondary: `#e34198`
-- Dark: `#461036`
+## Color Schemes
 
-All styling is done with CSS-in-JS for component isolation and val.town
-compatibility.
+- **Main Site**: Purple/pink theme (#ff0066, #6a0066, #934790, #e8d4b7)
+- **Blog Posts**: Leaflet publication colors (blue accents)
+- **Book Updates**: Bookhive colors (warm cream/brown theme)
+
+## Architecture
+
+The site uses a hybrid approach:
+
+- Server-side rendering for fast initial loads
+- Component-level caching for external API calls
+- Responsive grid layouts for optimal viewing on all devices
+- Environment-based configuration for easy customization

@@ -1,6 +1,7 @@
 import React from "https://esm.sh/react@18";
 import { renderToString } from "https://esm.sh/react-dom@18/server";
 import { App } from "./App.tsx";
+import { AtpAgent } from "npm:@atproto/api";
 
 interface Post {
   id: string;
@@ -11,12 +12,33 @@ interface Post {
   summary?: string;
 }
 
+interface Book {
+  uri: string;
+  cid: string;
+  value: {
+    $type: "buzz.bookhive.book";
+    title: string;
+    authors?: string;
+    hiveId: string;
+    status: string;
+    cover?: {
+      $type: "blob";
+      ref: {
+        $link: string;
+      };
+      mimeType: string;
+      size: number;
+    };
+    createdAt: string;
+  };
+}
+
 interface JSONFeed {
   items: Post[];
 }
 
 // Simple in-memory cache
-const cache = new Map<string, { data: Post[]; timestamp: number }>();
+const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 async function fetchBlogPosts(): Promise<Post[]> {
@@ -29,7 +51,11 @@ async function fetchBlogPosts(): Promise<Post[]> {
   }
 
   try {
-    const response = await fetch("https://tijs.leaflet.pub/json");
+    const feedUrl = Deno.env.get("LEAFLET_PUB_JSON") ||
+      "https://tijs.leaflet.pub/json";
+    console.log("Using LEAFLET_PUB_JSON:", feedUrl);
+
+    const response = await fetch(feedUrl);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -55,9 +81,221 @@ async function fetchBlogPosts(): Promise<Post[]> {
   }
 }
 
+async function resolveHandleToDID(handle: string): Promise<string> {
+  const cacheKey = `did-${handle}`;
+  const cached = cache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log(`Using cached DID for ${handle}:`, cached.data);
+    return cached.data;
+  }
+
+  try {
+    const url =
+      `https://slingshot.microcosm.blue/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${
+        encodeURIComponent(handle)
+      }`;
+    console.log(`Resolving DID for ${handle} via:`, url);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`DID resolution failed with status ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const did = data.did;
+
+    if (!did) {
+      console.error("DID not found in response:", data);
+      throw new Error("DID not found in response");
+    }
+
+    console.log(`Resolved DID for ${handle}:`, did);
+
+    cache.set(cacheKey, {
+      data: did,
+      timestamp: Date.now(),
+    });
+
+    return did;
+  } catch (error) {
+    console.error("Failed to resolve DID for", handle, ":", error);
+    if (cached) {
+      console.log("Using stale cached DID:", cached.data);
+      return cached.data;
+    }
+    throw error;
+  }
+}
+
+async function resolvePDS(handle: string): Promise<string> {
+  const cacheKey = `pds-${handle}`;
+  const cached = cache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log(`Using cached PDS for ${handle}:`, cached.data);
+    return cached.data;
+  }
+
+  try {
+    const url =
+      `https://slingshot.microcosm.blue/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${
+        encodeURIComponent(handle)
+      }`;
+    console.log(`Resolving PDS for ${handle} via:`, url);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`PDS resolution failed with status ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(
+      `PDS resolution response for ${handle}:`,
+      JSON.stringify(data, null, 2),
+    );
+
+    // Slingshot returns PDS directly in the pds field
+    const pdsUrl = data.pds;
+
+    if (!pdsUrl) {
+      console.error(
+        "PDS not found in response:",
+        data,
+      );
+      throw new Error("PDS not found in response");
+    }
+
+    console.log(`Resolved PDS for ${handle}:`, pdsUrl);
+
+    cache.set(cacheKey, {
+      data: pdsUrl,
+      timestamp: Date.now(),
+    });
+
+    return pdsUrl;
+  } catch (error) {
+    console.error("Failed to resolve PDS for", handle, ":", error);
+    if (cached) {
+      console.log("Using stale cached PDS:", cached.data);
+      return cached.data;
+    }
+    throw error;
+  }
+}
+
+async function fetchBookRecords(): Promise<{ books: Book[]; pdsUrl: string }> {
+  const cacheKey = "book-records";
+  const cached = cache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log(
+      "Using cached book records:",
+      cached.data.books.length,
+      "books",
+    );
+    return cached.data;
+  }
+
+  try {
+    console.log("Fetching book records...");
+
+    const atprotoHandle = Deno.env.get("ATPROTO_HANDLE") || "tijs.org";
+    console.log("Using ATPROTO_HANDLE:", atprotoHandle);
+
+    const pdsUrl = await resolvePDS(atprotoHandle);
+    console.log("Creating AtpAgent with PDS:", pdsUrl);
+    const agent = new AtpAgent({ service: pdsUrl });
+
+    console.log("Requesting book records from collection: buzz.bookhive.book");
+    const response = await agent.com.atproto.repo.listRecords({
+      repo: atprotoHandle.startsWith("did:")
+        ? atprotoHandle
+        : await resolveHandleToDID(atprotoHandle),
+      collection: "buzz.bookhive.book",
+      limit: 3,
+    });
+
+    console.log("Book records response:", {
+      recordCount: response.data.records.length,
+      cursor: response.data.cursor,
+      records: response.data.records.map((r) => ({
+        uri: r.uri,
+        title: (r.value as any)?.title,
+        status: (r.value as any)?.status,
+        hasCover: !!(r.value as any)?.cover,
+        coverStructure: (r.value as any)?.cover ? "present" : "missing",
+        fullRecord: r.value, // Log the full record to see what we're getting
+      })),
+    });
+
+    const books = response.data.records.slice(0, 3);
+
+    cache.set(cacheKey, {
+      data: { books, pdsUrl },
+      timestamp: Date.now(),
+    });
+
+    console.log("Successfully cached", books.length, "book records");
+    return { books, pdsUrl };
+  } catch (error) {
+    console.error("Failed to fetch book records:", error);
+    console.error("Error details:", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    });
+    if (cached) {
+      console.log(
+        "Using stale cached book records:",
+        cached.data.books.length,
+        "books",
+      );
+      return cached.data;
+    }
+    console.log("No cached data available, returning empty array");
+    return { books: [], pdsUrl: "" };
+  }
+}
+
 export default async function handler() {
-  const posts = await fetchBlogPosts();
-  const html = renderToString(<App posts={posts} />);
+  console.log("=== Handler starting ===");
+  const [posts, bookData] = await Promise.all([
+    fetchBlogPosts(),
+    fetchBookRecords(),
+  ]);
+
+  console.log("=== FINAL HANDLER RESULTS ===");
+  console.log("Posts fetched:", posts.length);
+  console.log("Books fetched:", bookData.books.length);
+  console.log("PDS URL:", bookData.pdsUrl);
+
+  if (bookData.books.length > 0) {
+    console.log("First book details:", {
+      title: bookData.books[0].value.title,
+      status: bookData.books[0].value.status,
+      hiveId: bookData.books[0].value.hiveId,
+      hasCover: !!bookData.books[0].value.cover,
+      coverCid: bookData.books[0].value.cover?.ref?.$link,
+      uri: bookData.books[0].uri,
+    });
+
+    if (bookData.books[0].value.cover?.ref?.$link) {
+      const did = bookData.books[0].uri.split("/")[2];
+      const cid = bookData.books[0].value.cover.ref.$link;
+      const blobUrl =
+        `${bookData.pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${cid}`;
+      console.log("Constructed blob URL:", blobUrl);
+    }
+  } else {
+    console.log("❌ NO BOOKS FOUND");
+  }
+
+  const html = renderToString(
+    <App posts={posts} books={bookData.books} pdsUrl={bookData.pdsUrl} />,
+  );
 
   return new Response(
     `<!DOCTYPE html>

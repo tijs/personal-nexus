@@ -7,12 +7,16 @@ export function AppsSection() {
       tagline: "Movement timer",
       url: "https://flexiblemovement.com",
       description: "Track your (rehab) exercises on iOS",
+      icon:
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/85/75/bf/8575bf1c-7522-db8d-44bf-26f4cc5fdd18/AppIcon-0-0-1x_U007ephone-0-1-85-220.jpeg/540x540bb.jpg",
     },
     {
       name: "Kilowatt",
       tagline: "EV charging timer for iOS",
       url: "https://kilowattcharging.com",
       description: "Estimate the charging time for your EVs on iOS",
+      icon:
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d0/9e/a3/d09ea387-6f70-63e3-7c55-57a286dd8c74/AppIcon-0-0-1x_U007epad-0-1-85-220.png/540x540bb.jpg",
     },
     {
       name: "Drop Anchor",
@@ -20,6 +24,8 @@ export function AppsSection() {
       url: "https://dropanchor.app/",
       description: "Social checkin app built on AT Protocol",
       label: "alpha",
+      icon:
+        "https://res.cloudinary.com/dru3aznlk/image/upload/v1754747200/anchor-logo-transparent_nrw70y.png",
     },
   ];
 
@@ -64,6 +70,31 @@ export function AppsSection() {
           border-radius: 0 4px 4px 0;
           transition: all 0.2s ease;
           user-select: none;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .app-content {
+          display: flex;
+          gap: 0.75rem;
+          height: 100%;
+        }
+
+        .app-icon {
+          width: 60px;
+          height: 60px;
+          flex-shrink: 0;
+          border-radius: 12px;
+          object-fit: cover;
+          background: rgba(147, 71, 144, 0.2);
+          border: 1px solid rgba(147, 71, 144, 0.3);
+        }
+
+        .app-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
         }
 
         .app-item:hover .app-card {
@@ -112,7 +143,7 @@ export function AppsSection() {
       `}
       </style>
 
-      <h2>Apps</h2>
+      <h2>Apps i've Made</h2>
       <div className="app-list">
         {apps.map((app, index) => (
           <a
@@ -123,12 +154,23 @@ export function AppsSection() {
             className="app-item"
           >
             <div className="app-card">
-              <div className="app-name">
-                <span>{app.name}</span>
-                {app.label && <span className="app-label">{app.label}</span>}
+              <div className="app-content">
+                <img
+                  src={app.icon}
+                  alt={`${app.name} icon`}
+                  className="app-icon"
+                  loading="lazy"
+                />
+                <div className="app-details">
+                  <div className="app-name">
+                    <span>{app.name}</span>
+                    {app.label && <span className="app-label">{app.label}
+                    </span>}
+                  </div>
+                  <div className="app-tagline">{app.tagline}</div>
+                  <div className="app-description">{app.description}</div>
+                </div>
               </div>
-              <div className="app-tagline">{app.tagline}</div>
-              <div className="app-description">{app.description}</div>
             </div>
           </a>
         ))}

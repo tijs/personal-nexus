@@ -142,7 +142,7 @@ export function PostsSection({ posts }: PostsSectionProps) {
       </style>
 
       <div className="posts-header">
-        <h2>Posts</h2>
+        <h2>Recent Posts</h2>
         <a
           href="https://tijs.leaflet.pub/"
           target="_blank"

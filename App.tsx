@@ -1,6 +1,7 @@
 import React from "https://esm.sh/react@18";
 import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { PostsSection } from "./components/PostsSection.tsx";
+import { BookSection } from "./components/BookSection.tsx";
 import { AppsSection } from "./components/AppsSection.tsx";
 import { OpenSourceSection } from "./components/OpenSourceSection.tsx";
 import { ExternalLinks } from "./components/ExternalLinks.tsx";
@@ -14,11 +15,34 @@ interface Post {
   summary?: string;
 }
 
-interface AppProps {
-  posts: Post[];
+interface Book {
+  uri: string;
+  cid: string;
+  value: {
+    $type: "buzz.bookhive.book";
+    title: string;
+    authors?: string;
+    hiveId: string;
+    status: string;
+    cover?: {
+      $type: "blob";
+      ref: {
+        $link: string;
+      };
+      mimeType: string;
+      size: number;
+    };
+    createdAt: string;
+  };
 }
 
-export function App({ posts }: AppProps) {
+interface AppProps {
+  posts: Post[];
+  books: Book[];
+  pdsUrl?: string;
+}
+
+export function App({ posts, books, pdsUrl }: AppProps) {
   return (
     <div className="app">
       <style>
@@ -91,6 +115,7 @@ export function App({ posts }: AppProps) {
 
       <ProfileHeader />
       <PostsSection posts={posts} />
+      <BookSection books={books} pdsUrl={pdsUrl} />
       <AppsSection />
       <OpenSourceSection />
       <ExternalLinks />

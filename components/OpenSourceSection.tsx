@@ -105,10 +105,38 @@ export function OpenSourceSection() {
           opacity: 0.8;
           font-size: 0.9rem;
         }
+
+        .projects-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+
+        .projects-link {
+          color: #ff0066;
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+
+        .projects-link:hover {
+          text-decoration: underline;
+        }
       `}
       </style>
 
-      <h2>Open Source</h2>
+      <div className="projects-header">
+        <h2>My Open Source Projects</h2>
+        <a
+          href="https://github.com/tijs"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="projects-link"
+        >
+          More projects →
+        </a>
+      </div>
       <div className="project-list">
         {projects.map((project, index) => (
           <a

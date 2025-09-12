@@ -1,6 +1,7 @@
 import React from "https://esm.sh/react@18";
 import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { PostsSection } from "./components/PostsSection.tsx";
+import { CheckinsSection } from "./components/CheckinsSection.tsx";
 import { BookSection } from "./components/BookSection.tsx";
 import { AppsSection } from "./components/AppsSection.tsx";
 import { OpenSourceSection } from "./components/OpenSourceSection.tsx";
@@ -36,13 +37,52 @@ interface Book {
   };
 }
 
+interface Checkin {
+  uri: string;
+  cid: string;
+  value: {
+    text: string;
+    $type: "app.dropanchor.checkin";
+    category: string;
+    createdAt: string;
+    addressRef: {
+      cid: string;
+      uri: string;
+    };
+    coordinates: {
+      latitude: number;
+      longitude: number;
+    };
+    categoryIcon: string;
+    categoryGroup: string;
+  };
+}
+
+interface Address {
+  uri: string;
+  cid: string;
+  value: {
+    name: string;
+    $type: "community.lexicon.location.address";
+    region: string;
+    country: string;
+    locality: string;
+  };
+}
+
+interface CheckinWithAddress {
+  checkin: Checkin;
+  address: Address;
+}
+
 interface AppProps {
   posts: Post[];
   books: Book[];
+  checkins: CheckinWithAddress[];
   pdsUrl?: string;
 }
 
-export function App({ posts, books, pdsUrl }: AppProps) {
+export function App({ posts, books, checkins, pdsUrl }: AppProps) {
   return (
     <div className="app">
       <style>
@@ -115,6 +155,7 @@ export function App({ posts, books, pdsUrl }: AppProps) {
 
       <ProfileHeader />
       <PostsSection posts={posts} />
+      <CheckinsSection checkins={checkins} />
       <BookSection books={books} pdsUrl={pdsUrl} />
       <AppsSection />
       <OpenSourceSection />

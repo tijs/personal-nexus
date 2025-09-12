@@ -33,6 +33,44 @@ interface Book {
   };
 }
 
+interface Checkin {
+  uri: string;
+  cid: string;
+  value: {
+    text: string;
+    $type: "app.dropanchor.checkin";
+    category: string;
+    createdAt: string;
+    addressRef: {
+      cid: string;
+      uri: string;
+    };
+    coordinates: {
+      latitude: number;
+      longitude: number;
+    };
+    categoryIcon: string;
+    categoryGroup: string;
+  };
+}
+
+interface Address {
+  uri: string;
+  cid: string;
+  value: {
+    name: string;
+    $type: "community.lexicon.location.address";
+    region: string;
+    country: string;
+    locality: string;
+  };
+}
+
+interface CheckinWithAddress {
+  checkin: Checkin;
+  address: Address;
+}
+
 interface JSONFeed {
   items: Post[];
 }
@@ -260,16 +298,109 @@ async function fetchBookRecords(): Promise<{ books: Book[]; pdsUrl: string }> {
   }
 }
 
+async function fetchCheckins(): Promise<CheckinWithAddress[]> {
+  const cacheKey = "checkins";
+  const cached = cache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log("Using cached checkins:", cached.data.length, "checkins");
+    return cached.data;
+  }
+
+  try {
+    console.log("Fetching checkin records...");
+
+    const atprotoHandle = Deno.env.get("ATPROTO_HANDLE") || "tijs.org";
+    const pdsUrl = await resolvePDS(atprotoHandle);
+    const agent = new AtpAgent({ service: pdsUrl });
+
+    const did = atprotoHandle.startsWith("did:")
+      ? atprotoHandle
+      : await resolveHandleToDID(atprotoHandle);
+
+    console.log(
+      "Requesting checkin records from collection: app.dropanchor.checkin",
+    );
+    const response = await agent.com.atproto.repo.listRecords({
+      repo: did,
+      collection: "app.dropanchor.checkin",
+      limit: 3,
+    });
+
+    console.log("Checkin records response:", {
+      recordCount: response.data.records.length,
+    });
+
+    const checkins = response.data.records.slice(0, 3) as Checkin[];
+
+    // Fetch address records for each checkin
+    const checkinsWithAddresses: CheckinWithAddress[] = [];
+
+    for (const checkin of checkins) {
+      try {
+        console.log(
+          "Fetching address for checkin:",
+          checkin.value.addressRef.uri,
+        );
+
+        const addressResponse = await agent.com.atproto.repo.getRecord({
+          repo: did,
+          collection: "community.lexicon.location.address",
+          rkey: checkin.value.addressRef.uri.split("/").pop()!,
+        });
+
+        const address = addressResponse.data as Address;
+        checkinsWithAddresses.push({ checkin, address });
+
+        console.log("Successfully fetched address:", address.value.name);
+      } catch (error) {
+        console.error(
+          "Failed to fetch address for checkin:",
+          checkin.uri,
+          error,
+        );
+        // Skip this checkin if address fetch fails
+      }
+    }
+
+    cache.set(cacheKey, {
+      data: checkinsWithAddresses,
+      timestamp: Date.now(),
+    });
+
+    console.log(
+      "Successfully cached",
+      checkinsWithAddresses.length,
+      "checkin records",
+    );
+    return checkinsWithAddresses;
+  } catch (error) {
+    console.error("Failed to fetch checkin records:", error);
+    if (cached) {
+      console.log(
+        "Using stale cached checkins:",
+        cached.data.length,
+        "checkins",
+      );
+      return cached.data;
+    }
+    console.log("No cached data available, returning empty array");
+    return [];
+  }
+}
+
 export default async function handler() {
   console.log("=== Handler starting ===");
-  const [posts, bookData] = await Promise.all([
+  const [posts, bookData, checkins] = await Promise.all([
     fetchBlogPosts(),
     fetchBookRecords(),
+    fetchCheckins(),
   ]);
 
   console.log("=== FINAL HANDLER RESULTS ===");
   console.log("Posts fetched:", posts.length);
   console.log("Books fetched:", bookData.books.length);
+  console.log("Checkins fetched:", checkins.length);
   console.log("PDS URL:", bookData.pdsUrl);
 
   if (bookData.books.length > 0) {
@@ -294,7 +425,12 @@ export default async function handler() {
   }
 
   const html = renderToString(
-    <App posts={posts} books={bookData.books} pdsUrl={bookData.pdsUrl} />,
+    <App
+      posts={posts}
+      books={bookData.books}
+      checkins={checkins}
+      pdsUrl={bookData.pdsUrl}
+    />,
   );
 
   return new Response(

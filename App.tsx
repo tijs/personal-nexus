@@ -118,7 +118,7 @@ export function App({ posts, books, checkins, pdsUrl }: AppProps) {
 
         h2 {
           font-size: 1.5rem;
-          color: #ff0066;
+          color: #cc0055;
           margin-top: 2rem;
           margin-bottom: 1rem;
         }
@@ -133,7 +133,7 @@ export function App({ posts, books, checkins, pdsUrl }: AppProps) {
         }
 
         a {
-          color: #ff0066;
+          color: #cc0055;
           text-decoration: none;
         }
 
@@ -154,12 +154,16 @@ export function App({ posts, books, checkins, pdsUrl }: AppProps) {
       </style>
 
       <ProfileHeader />
-      <PostsSection posts={posts} />
-      <CheckinsSection checkins={checkins} />
-      <BookSection books={books} pdsUrl={pdsUrl} />
-      <AppsSection />
-      <OpenSourceSection />
-      <ExternalLinks />
+      <main>
+        <PostsSection posts={posts} />
+        <CheckinsSection checkins={checkins} />
+        <BookSection books={books} pdsUrl={pdsUrl} />
+        <AppsSection />
+        <OpenSourceSection />
+      </main>
+      <nav aria-label="External links">
+        <ExternalLinks />
+      </nav>
     </div>
   );
 }

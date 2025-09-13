@@ -86,18 +86,18 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "buzz.bookhive.defs#wantToRead":
-        return "#6366f1"; // Indigo
+        return "#4f46e5"; // Darker indigo
       case "buzz.bookhive.defs#reading":
-        return "#f59e0b"; // Amber
+        return "#d97706"; // Darker amber
       case "buzz.bookhive.defs#finished":
-        return "#10b981"; // Emerald
+        return "#059669"; // Darker emerald
       default:
-        return "#6b7280"; // Gray
+        return "#4b5563"; // Darker gray
     }
   };
 
   return (
-    <section>
+    <section aria-labelledby="books-heading">
       <style>
         {`
         .books-header {
@@ -108,7 +108,7 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
         }
 
         .books-link {
-          color: #ff0066;
+          color: #cc0055;
           text-decoration: none;
           font-size: 0.9rem;
           font-weight: 500;
@@ -222,8 +222,7 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
         }
 
         .book-date {
-          color: #8b4513;
-          opacity: 0.8;
+          color: #6b3410;
           font-size: 0.8rem;
           margin-bottom: 0.75rem;
         }
@@ -245,7 +244,7 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
       </style>
 
       <div className="books-header">
-        <h2>Book Updates</h2>
+        <h2 id="books-heading">Book Updates</h2>
         <a
           href="https://bookhive.buzz/profile/tijs.org"
           target="_blank"

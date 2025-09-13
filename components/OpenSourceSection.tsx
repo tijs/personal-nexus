@@ -40,7 +40,7 @@ export function OpenSourceSection() {
   ];
 
   return (
-    <section>
+    <section aria-labelledby="projects-heading">
       <style>
         {`
         .project-list {
@@ -75,23 +75,23 @@ export function OpenSourceSection() {
 
         .project-card {
           padding: 1rem;
-          border-left: 3px solid #ff0066;
-          background: rgba(255, 0, 102, 0.1);
+          border-left: 3px solid #cc0055;
+          background: rgba(204, 0, 85, 0.1);
           border-radius: 0 4px 4px 0;
           transition: all 0.2s ease;
           user-select: none;
         }
 
         .project-item:hover .project-card {
-          background: rgba(255, 0, 102, 0.2);
+          background: rgba(204, 0, 85, 0.2);
           transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(255, 0, 102, 0.3);
+          box-shadow: 0 4px 8px rgba(204, 0, 85, 0.3);
         }
 
         .project-item:active .project-card {
           transform: translateY(0px);
-          background: rgba(255, 0, 102, 0.25);
-          box-shadow: 0 2px 4px rgba(255, 0, 102, 0.2);
+          background: rgba(204, 0, 85, 0.25);
+          box-shadow: 0 2px 4px rgba(204, 0, 85, 0.2);
         }
 
         .project-name {
@@ -114,7 +114,7 @@ export function OpenSourceSection() {
         }
 
         .projects-link {
-          color: #ff0066;
+          color: #cc0055;
           text-decoration: none;
           font-size: 0.9rem;
           font-weight: 500;
@@ -127,7 +127,7 @@ export function OpenSourceSection() {
       </style>
 
       <div className="projects-header">
-        <h2>My Open Source Projects</h2>
+        <h2 id="projects-heading">My Open Source Projects</h2>
         <a
           href="https://github.com/tijs"
           target="_blank"

@@ -150,7 +150,7 @@ export function ExternalLinks() {
       </style>
 
       <div className="links-container">
-        <h2>Connect</h2>
+        <h2 id="connect-heading">Connect</h2>
         <div className="links-list">
           {links.map((link, index) => (
             <a

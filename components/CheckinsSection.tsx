@@ -80,7 +80,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
   };
 
   return (
-    <section>
+    <section aria-labelledby="checkins-heading">
       <style>
         {`
         .checkins-header {
@@ -91,7 +91,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
         }
 
         .checkins-link {
-          color: #ff0066;
+          color: #cc0055;
           text-decoration: none;
           font-size: 0.9rem;
           font-weight: 500;
@@ -165,7 +165,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
         }
 
         .checkin-date {
-          color: #e91e63;
+          color: #c91853;
           font-size: 0.8rem;
           margin-bottom: 0.75rem;
         }
@@ -180,7 +180,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
       </style>
 
       <div className="checkins-header">
-        <h2>Recent Check-ins</h2>
+        <h2 id="checkins-heading">Recent Check-ins</h2>
         <a
           href="https://dropanchor.app/profile/tijs.org"
           target="_blank"

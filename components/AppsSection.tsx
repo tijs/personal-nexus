@@ -30,7 +30,7 @@ export function AppsSection() {
   ];
 
   return (
-    <section>
+    <section aria-labelledby="apps-heading">
       <style>
         {`
         .app-list {
@@ -119,7 +119,7 @@ export function AppsSection() {
         }
 
         .app-label {
-          background: #ff0066;
+          background: #cc0055;
           color: white;
           padding: 0.125rem 0.5rem;
           border-radius: 12px;
@@ -129,7 +129,7 @@ export function AppsSection() {
         }
 
         .app-tagline {
-          color: #ff0066;
+          color: #cc0055;
           font-size: 0.9rem;
           font-style: italic;
           margin-bottom: 0.25rem;
@@ -143,7 +143,7 @@ export function AppsSection() {
       `}
       </style>
 
-      <h2>Apps i've Made</h2>
+      <h2 id="apps-heading">Apps i've Made</h2>
       <div className="app-list">
         {apps.map((app, index) => (
           <a

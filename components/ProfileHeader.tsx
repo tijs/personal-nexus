@@ -31,7 +31,7 @@ export function ProfileHeader() {
 
           .profile-title {
             font-size: 1.3rem;
-            color: #ff0066;
+            color: #cc0055;
             font-weight: 600;
             margin-bottom: 0.5rem;
           }

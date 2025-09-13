@@ -41,7 +41,7 @@ export function PostsSection({ posts }: PostsSectionProps) {
   };
 
   return (
-    <section>
+    <section aria-labelledby="posts-heading">
       <style>
         {`
         .posts-header {
@@ -52,7 +52,7 @@ export function PostsSection({ posts }: PostsSectionProps) {
         }
 
         .posts-link {
-          color: #ff0066;
+          color: #cc0055;
           text-decoration: none;
           font-size: 0.9rem;
           font-weight: 500;
@@ -142,7 +142,7 @@ export function PostsSection({ posts }: PostsSectionProps) {
       </style>
 
       <div className="posts-header">
-        <h2>Recent Posts</h2>
+        <h2 id="posts-heading">Recent Posts</h2>
         <a
           href="https://tijs.leaflet.pub/"
           target="_blank"

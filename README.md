@@ -1,19 +1,24 @@
 # Personal Nexus
 
-> A modern personal website that connects all your decentralized content in one place.  
-> *Not to be confused with the Torment Nexus from classic sci-fi literature.*
+> A modern personal website that connects all your decentralized content in one
+> place.\
+> _Not to be confused with the Torment Nexus from classic sci-fi literature._
 
-**Personal Nexus** is a React SSR website that serves as a central hub for your distributed digital identity, aggregating content from multiple AT Protocol sources and platforms into a beautiful, accessible personal website.
+**Personal Nexus** is a React SSR website that serves as a central hub for your
+distributed digital identity, aggregating content from multiple AT Protocol
+sources and platforms into a beautiful, accessible personal website.
 
 ## ✨ Features
 
 ### 🌐 **Dynamic Content Integration**
+
 - **Blog Posts**: Latest articles from Leaflet publication via JSON feed
 - **Check-ins**: Location updates from DropAnchor via AT Protocol
 - **Book Updates**: Reading activity from Bookhive via AT Protocol
 - **Projects**: Showcase of apps and open source contributions
 
 ### 🎨 **Modern Design**
+
 - **Responsive Grid Layouts**: 3 columns on desktop, 1 on mobile
 - **Custom Typography**: Caprasimo, Lato, and Outfit font stack
 - **Accessible Color Palette**: WCAG 2.2 AA compliant purple/pink theme
@@ -21,12 +26,14 @@
 - **Thumbnails**: App icons and book cover images
 
 ### ♿ **Full Accessibility**
+
 - **WCAG 2.2 AA Compliance**: 4.5:1 contrast ratios throughout
 - **Semantic HTML**: Proper landmarks and ARIA labels
 - **Screen Reader Support**: Optimized for assistive technologies
 - **Keyboard Navigation**: Full keyboard accessibility
 
 ### 🔧 **Technical Excellence**
+
 - **React 18 SSR**: Server-side rendering optimized for val.town
 - **AT Protocol Integration**: Native support for decentralized protocols
 - **Deno Runtime**: Modern ESM imports, no Node.js dependencies
@@ -65,6 +72,7 @@ The website automatically aggregates content from:
 ### Customization
 
 The website is designed to be easily customizable:
+
 - Update personal information in `components/ProfileHeader.tsx`
 - Modify app showcase in `components/AppsSection.tsx`
 - Adjust color themes in component stylesheets
@@ -72,9 +80,11 @@ The website is designed to be easily customizable:
 
 ## 🏗️ Architecture
 
-Personal Nexus uses **server-side rendering** to generate HTML with dynamic content from multiple decentralized sources:
+Personal Nexus uses **server-side rendering** to generate HTML with dynamic
+content from multiple decentralized sources:
 
-1. **AT Protocol Integration**: Connects directly to your PDS (Personal Data Server)
+1. **AT Protocol Integration**: Connects directly to your PDS (Personal Data
+   Server)
 2. **Data Aggregation**: Fetches and combines content from various platforms
 3. **Server-side Caching**: Implements intelligent caching to reduce API calls
 4. **Graceful Fallbacks**: Handles network issues and missing data elegantly
@@ -97,7 +107,8 @@ Personal Nexus uses **server-side rendering** to generate HTML with dynamic cont
 
 ## 🤝 Contributing
 
-This project demonstrates modern web development practices with decentralized protocols. Feel free to fork and adapt for your own personal website!
+This project demonstrates modern web development practices with decentralized
+protocols. Feel free to fork and adapt for your own personal website!
 
 ## 📄 License
 

@@ -6,9 +6,8 @@ export function Footer() {
       <style>
         {`
         footer {
-          margin-top: 3rem;
+          margin-top: 2rem;
           padding: 2rem 0 1rem 0;
-          border-top: 1px solid rgba(106, 0, 102, 0.2);
           text-align: center;
         }
 
@@ -38,7 +37,7 @@ export function Footer() {
 
         @media (max-width: 768px) {
           footer {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             padding: 1.5rem 0 1rem 0;
           }
           

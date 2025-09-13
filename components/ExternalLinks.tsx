@@ -67,7 +67,7 @@ export function ExternalLinks() {
       <style>
         {`
         .links-container {
-          margin-top: 3rem;
+          margin-top: 2rem;
           padding-top: 2rem;
           border-top: 1px solid rgba(106, 0, 102, 0.2);
         }
@@ -150,9 +150,6 @@ export function ExternalLinks() {
       </style>
 
       <div className="links-container">
-        <div className="connect-header">
-          <h2 id="connect-heading">Connect</h2>
-        </div>
         <div className="links-list">
           {links.map((link, index) => (
             <a

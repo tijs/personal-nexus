@@ -6,6 +6,7 @@ import { BookSection } from "./components/BookSection.tsx";
 import { AppsSection } from "./components/AppsSection.tsx";
 import { OpenSourceSection } from "./components/OpenSourceSection.tsx";
 import { ExternalLinks } from "./components/ExternalLinks.tsx";
+import { Footer } from "./components/Footer.tsx";
 
 interface Post {
   id: string;
@@ -164,6 +165,7 @@ export function App({ posts, books, checkins, pdsUrl }: AppProps) {
       <nav aria-label="External links">
         <ExternalLinks />
       </nav>
+      <Footer />
     </div>
   );
 }

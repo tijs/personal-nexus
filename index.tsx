@@ -99,7 +99,13 @@ async function fetchBlogPosts(): Promise<Post[]> {
     }
 
     const feed: JSONFeed = await response.json();
-    const posts = feed.items.slice(0, 3); // Get latest 3 posts
+    // Sort posts by date_modified (most recent first) and get latest 3 posts
+    const posts = feed.items
+      .sort((a, b) =>
+        new Date(b.date_modified).getTime() -
+        new Date(a.date_modified).getTime()
+      )
+      .slice(0, 3);
 
     // Cache the results
     cache.set(cacheKey, {

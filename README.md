@@ -43,9 +43,13 @@ sources and platforms into a beautiful, accessible personal website.
 ## 🚀 Quick Start
 
 ### Option 1: Remix on Val.town
-The easiest way to get started is to **[remix this project on Val.town](https://www.val.town/x/tijs/tijs_org)** - you can fork it directly and start customizing immediately.
+
+The easiest way to get started is to
+**[remix this project on Val.town](https://www.val.town/x/tijs/tijs_org)** - you
+can fork it directly and start customizing immediately.
 
 ### Option 2: Local Development
+
 ```bash
 # Format code
 deno fmt

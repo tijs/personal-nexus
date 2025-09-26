@@ -1,44 +1,21 @@
 import React from "https://esm.sh/react@18";
 
-export function OpenSourceSection() {
-  const projects = [
-    {
-      name: "Anchor",
-      url: "https://github.com/dropanchorapp/Anchor",
-      description:
-        "A system & app for doing location based checkins on ATProto a.k.a Bluesky",
-    },
-    {
-      name: "atproto-to-fediverse",
-      url: "https://github.com/tijs/atproto-to-fediverse",
-      description:
-        "Syncs just posts (not replies, reposts, etc) from atproto (Bluesky) to Mastodon",
-    },
-    {
-      name: "oauth-client-deno",
-      url: "https://github.com/tijs/oauth-client-deno",
-      description:
-        "A Deno-compatible AT Protocol OAuth client that serves as a drop-in replacement",
-    },
-    {
-      name: "location-feed-generator",
-      url: "https://github.com/dropanchorapp/location-feed-generator",
-      description: "Location AppView with Feed Generation Capabilities",
-    },
-    {
-      name: "book-explorer",
-      url: "https://github.com/tijs/book-explorer",
-      description:
-        "Book explorer is a very simple alternate UI for the Bookhive.buzz social platform",
-    },
-    {
-      name: "hono-oauth-sessions",
-      url: "https://github.com/tijs/hono-oauth-sessions",
-      description:
-        "Storage-agnostic OAuth session management for AT Protocol applications",
-    },
-  ];
+interface GitHubRepo {
+  id: number;
+  name: string;
+  full_name: string;
+  html_url: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  updated_at: string;
+}
 
+interface OpenSourceSectionProps {
+  starredRepos: GitHubRepo[];
+}
+
+export function OpenSourceSection({ starredRepos }: OpenSourceSectionProps) {
   return (
     <section aria-labelledby="projects-heading">
       <style>
@@ -138,19 +115,21 @@ export function OpenSourceSection() {
         </a>
       </div>
       <div className="project-list">
-        {projects.map((project, index) => (
+        {starredRepos.map((repo) => (
           <a
-            key={index}
-            href={project.url}
+            key={repo.id}
+            href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
             className="project-item"
           >
             <div className="project-card">
               <div className="project-name">
-                <span>{project.name}</span>
+                <span>{repo.name}</span>
               </div>
-              <div className="project-description">{project.description}</div>
+              <div className="project-description">
+                {repo.description || "No description available"}
+              </div>
             </div>
           </a>
         ))}

@@ -76,14 +76,28 @@ interface CheckinWithAddress {
   address: Address;
 }
 
+interface GitHubRepo {
+  id: number;
+  name: string;
+  full_name: string;
+  html_url: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  updated_at: string;
+}
+
 interface AppProps {
   posts: Post[];
   books: Book[];
   checkins: CheckinWithAddress[];
   pdsUrl?: string;
+  starredRepos: GitHubRepo[];
 }
 
-export function App({ posts, books, checkins, pdsUrl }: AppProps) {
+export function App(
+  { posts, books, checkins, pdsUrl, starredRepos }: AppProps,
+) {
   return (
     <div className="app">
       <style>
@@ -160,7 +174,7 @@ export function App({ posts, books, checkins, pdsUrl }: AppProps) {
         <CheckinsSection checkins={checkins} />
         <BookSection books={books} pdsUrl={pdsUrl} />
         <AppsSection />
-        <OpenSourceSection />
+        <OpenSourceSection starredRepos={starredRepos} />
       </main>
       <nav aria-label="External links">
         <ExternalLinks />

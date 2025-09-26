@@ -69,6 +69,8 @@ The application fetches data from multiple sources in parallel:
 - `ATPROTO_HANDLE`: Your AT Protocol handle (defaults to "tijs.org")
 - `LEAFLET_PUB_JSON`: URL to your Leaflet publication JSON feed (defaults to
   "https://tijs.leaflet.pub/json")
+- `GITHUB_USERNAME`: Your GitHub username for fetching pinned repositories
+  (required)
 
 ## Development Notes
 

@@ -1,7 +1,7 @@
 import React from "https://esm.sh/react@18";
 import { renderToString } from "https://esm.sh/react-dom@18/server";
 import { App } from "./App.tsx";
-import { AtpAgent } from "npm:@atproto/api";
+import { AtpAgent } from "npm:@atproto/api@0.12.29";
 
 interface Post {
   id: string;
@@ -73,6 +73,17 @@ interface CheckinWithAddress {
 
 interface JSONFeed {
   items: Post[];
+}
+
+interface GitHubRepo {
+  id: number;
+  name: string;
+  full_name: string;
+  html_url: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  updated_at: string;
 }
 
 // Simple in-memory cache
@@ -395,18 +406,113 @@ async function fetchCheckins(): Promise<CheckinWithAddress[]> {
   }
 }
 
+async function fetchGitHubPinnedRepos(): Promise<GitHubRepo[]> {
+  const cacheKey = "github-pinned";
+  const cached = cache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log(
+      "Using cached GitHub pinned repos:",
+      cached.data.length,
+      "repos",
+    );
+    return cached.data;
+  }
+
+  try {
+    console.log("Fetching GitHub pinned repositories...");
+
+    const username = Deno.env.get("GITHUB_USERNAME");
+    if (!username) {
+      throw new Error("GITHUB_USERNAME environment variable is required");
+    }
+
+    console.log("Using GITHUB_USERNAME:", username);
+
+    // Hardcoded pinned repository names (update these when you change your pinned repos)
+    // These match your current pinned repositories on GitHub
+    const pinnedRepoData = [
+      { owner: "dropanchorapp", name: "Anchor" },
+      { owner: "tijs", name: "atproto-to-fediverse" },
+      { owner: "tijs", name: "oauth-client-deno" },
+      { owner: "dropanchorapp", name: "location-feed-generator" },
+      { owner: "tijs", name: "book-explorer" },
+      { owner: "tijs", name: "hono-oauth-sessions" },
+    ];
+
+    console.log(
+      "Using hardcoded pinned repo list:",
+      pinnedRepoData.map((r) => `${r.owner}/${r.name}`),
+    );
+
+    // Now fetch details for each pinned repo using the GitHub API
+    const pinnedRepos: GitHubRepo[] = [];
+
+    for (const repoData of pinnedRepoData) {
+      try {
+        const repoResponse = await fetch(
+          `https://api.github.com/repos/${repoData.owner}/${repoData.name}`,
+          {
+            headers: {
+              "User-Agent": "tijs-org-website",
+              "Accept": "application/vnd.github.v3+json",
+            },
+          },
+        );
+
+        if (repoResponse.ok) {
+          const repo: GitHubRepo = await repoResponse.json();
+          pinnedRepos.push(repo);
+          console.log(`Fetched details for ${repoData.owner}/${repoData.name}`);
+        } else {
+          console.warn(
+            `Failed to fetch details for ${repoData.owner}/${repoData.name}: ${repoResponse.status}`,
+          );
+        }
+      } catch (error) {
+        console.warn(
+          `Error fetching ${repoData.owner}/${repoData.name}:`,
+          error,
+        );
+      }
+    }
+
+    cache.set(cacheKey, {
+      data: pinnedRepos,
+      timestamp: Date.now(),
+    });
+
+    console.log("Successfully cached", pinnedRepos.length, "pinned repos");
+    return pinnedRepos;
+  } catch (error) {
+    console.error("Failed to fetch GitHub pinned repos:", error);
+    if (cached) {
+      console.log(
+        "Using stale cached pinned repos:",
+        cached.data.length,
+        "repos",
+      );
+      return cached.data;
+    }
+    console.log("No cached data available, returning empty array");
+    return [];
+  }
+}
+
 export default async function handler() {
   console.log("=== Handler starting ===");
-  const [posts, bookData, checkins] = await Promise.all([
+  const [posts, bookData, checkins, pinnedRepos] = await Promise.all([
     fetchBlogPosts(),
     fetchBookRecords(),
     fetchCheckins(),
+    fetchGitHubPinnedRepos(),
   ]);
 
   console.log("=== FINAL HANDLER RESULTS ===");
   console.log("Posts fetched:", posts.length);
   console.log("Books fetched:", bookData.books.length);
   console.log("Checkins fetched:", checkins.length);
+  console.log("Pinned repos fetched:", pinnedRepos.length);
   console.log("PDS URL:", bookData.pdsUrl);
 
   if (bookData.books.length > 0) {
@@ -436,6 +542,7 @@ export default async function handler() {
       books={bookData.books}
       checkins={checkins}
       pdsUrl={bookData.pdsUrl}
+      starredRepos={pinnedRepos}
     />,
   );
 

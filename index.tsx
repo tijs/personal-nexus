@@ -435,7 +435,7 @@ async function fetchGitHubPinnedRepos(): Promise<GitHubRepo[]> {
       { owner: "dropanchorapp", name: "Anchor" },
       { owner: "tijs", name: "atproto-to-fediverse" },
       { owner: "tijs", name: "oauth-client-deno" },
-      { owner: "dropanchorapp", name: "location-feed-generator" },
+      { owner: "dropanchorapp", name: "anchor-appview" },
       { owner: "tijs", name: "book-explorer" },
       { owner: "tijs", name: "hono-oauth-sessions" },
     ];

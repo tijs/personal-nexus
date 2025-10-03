@@ -76,7 +76,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
 
   const getCheckinUrl = (uri: string) => {
     const id = getCheckinId(uri);
-    return `https://dropanchor.app/checkin/${id}`;
+    return `https://dropanchor.app/checkins/tijs.org/${id}`;
   };
 
   return (

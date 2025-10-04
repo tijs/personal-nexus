@@ -107,7 +107,7 @@ interface GitHubRepo {
 
 // Simple in-memory cache
 const cache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_DURATION = 60 * 1000; // 1 minute (temporary for testing)
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 async function fetchBlogPosts(): Promise<Post[]> {
   const cacheKey = "blog-posts";

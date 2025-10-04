@@ -51,6 +51,25 @@ interface Checkin {
     };
     categoryIcon: string;
     categoryGroup: string;
+    image?: {
+      alt?: string;
+      thumb: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+      fullsize: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+    };
   };
 }
 
@@ -88,7 +107,7 @@ interface GitHubRepo {
 
 // Simple in-memory cache
 const cache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+const CACHE_DURATION = 60 * 1000; // 1 minute (temporary for testing)
 
 async function fetchBlogPosts(): Promise<Post[]> {
   const cacheKey = "blog-posts";
@@ -346,6 +365,12 @@ async function fetchCheckins(): Promise<CheckinWithAddress[]> {
 
     console.log("Checkin records response:", {
       recordCount: response.data.records.length,
+      records: response.data.records.map((r) => ({
+        uri: r.uri,
+        text: (r.value as any)?.text,
+        hasImage: !!(r.value as any)?.image,
+        imageStructure: (r.value as any)?.image ? "present" : "missing",
+      })),
     });
 
     const checkins = response.data.records.slice(0, 3) as Checkin[];

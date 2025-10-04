@@ -56,6 +56,25 @@ interface Checkin {
     };
     categoryIcon: string;
     categoryGroup: string;
+    image?: {
+      alt?: string;
+      thumb: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+      fullsize: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+    };
   };
 }
 
@@ -171,7 +190,7 @@ export function App(
       <ProfileHeader />
       <main>
         <PostsSection posts={posts} />
-        <CheckinsSection checkins={checkins} />
+        <CheckinsSection checkins={checkins} pdsUrl={pdsUrl} />
         <BookSection books={books} pdsUrl={pdsUrl} />
         <AppsSection />
         <OpenSourceSection starredRepos={starredRepos} />

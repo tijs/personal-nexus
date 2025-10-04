@@ -18,6 +18,25 @@ interface Checkin {
     };
     categoryIcon: string;
     categoryGroup: string;
+    image?: {
+      alt?: string;
+      thumb: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+      fullsize: {
+        $type: "blob";
+        ref: {
+          $link: string;
+        };
+        mimeType: string;
+        size: number;
+      };
+    };
   };
 }
 
@@ -40,9 +59,10 @@ interface CheckinWithAddress {
 
 interface CheckinsSectionProps {
   checkins: CheckinWithAddress[];
+  pdsUrl?: string;
 }
 
-export function CheckinsSection({ checkins }: CheckinsSectionProps) {
+export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -77,6 +97,17 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
   const getCheckinUrl = (uri: string) => {
     const id = getCheckinId(uri);
     return `https://dropanchor.app/checkins/tijs.org/${id}`;
+  };
+
+  const getThumbnailUrl = (checkin: Checkin) => {
+    if (!checkin.value.image?.thumb?.ref || !pdsUrl) {
+      return null;
+    }
+    const did = checkin.uri.split("/")[2];
+    // The ref can be either a CID object or an object with $link
+    const ref = checkin.value.image.thumb.ref as any;
+    const cid = ref.$link || ref.toString();
+    return `${pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${cid}`;
   };
 
   return (
@@ -140,7 +171,7 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
           user-select: none;
           height: 100%;
           display: flex;
-          flex-direction: column;
+          gap: 1rem;
           box-shadow: 0 1px 3px rgba(233, 30, 99, 0.1);
         }
 
@@ -154,6 +185,22 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
           transform: translateY(0px);
           background: #f1f3f4;
           box-shadow: 0 2px 6px rgba(233, 30, 99, 0.12);
+        }
+
+        .checkin-thumbnail {
+          width: 80px;
+          height: 80px;
+          flex-shrink: 0;
+          border-radius: 4px;
+          object-fit: cover;
+          background: #e5e7eb;
+        }
+
+        .checkin-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
         }
 
         .checkin-text {
@@ -192,25 +239,38 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
       </div>
 
       <div className="checkins-list">
-        {checkins.map((item) => (
-          <a
-            key={item.checkin.uri}
-            href={getCheckinUrl(item.checkin.uri)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="checkin-item"
-          >
-            <div className="checkin-card">
-              <div className="checkin-text">{item.checkin.value.text}</div>
-              <div className="checkin-date">
-                {formatDate(item.checkin.value.createdAt)}
+        {checkins.map((item) => {
+          const thumbnailUrl = getThumbnailUrl(item.checkin);
+          return (
+            <a
+              key={item.checkin.uri}
+              href={getCheckinUrl(item.checkin.uri)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="checkin-item"
+            >
+              <div className="checkin-card">
+                {thumbnailUrl && (
+                  <img
+                    src={thumbnailUrl}
+                    alt={item.checkin.value.image?.alt ||
+                      item.checkin.value.text}
+                    className="checkin-thumbnail"
+                  />
+                )}
+                <div className="checkin-content">
+                  <div className="checkin-text">{item.checkin.value.text}</div>
+                  <div className="checkin-date">
+                    {formatDate(item.checkin.value.createdAt)}
+                  </div>
+                  <div className="checkin-location">
+                    {getLocationString(item.address)}
+                  </div>
+                </div>
               </div>
-              <div className="checkin-location">
-                {getLocationString(item.address)}
-              </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     </section>
   );

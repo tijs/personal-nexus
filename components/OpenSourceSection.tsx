@@ -38,6 +38,11 @@ export function OpenSourceSection() {
       url: "https://github.com/tijs/fastlane-plugin-translate",
       description: "Fastlane plugin for translating app metadata",
     },
+    {
+      name: "kipclip-appview",
+      url: "https://github.com/tijs/kipclip-appview",
+      description: "Custom appview for kipclip bookmarks on AT Protocol",
+    },
   ];
   return (
     <section aria-labelledby="projects-heading">

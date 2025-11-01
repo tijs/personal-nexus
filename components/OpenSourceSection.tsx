@@ -1,21 +1,44 @@
 import React from "https://esm.sh/react@18";
+import { KofiSupport } from "./KofiSupport.tsx";
 
-interface GitHubRepo {
-  id: number;
-  name: string;
-  full_name: string;
-  html_url: string;
-  description: string | null;
-  language: string | null;
-  stargazers_count: number;
-  updated_at: string;
-}
-
-interface OpenSourceSectionProps {
-  starredRepos: GitHubRepo[];
-}
-
-export function OpenSourceSection({ starredRepos }: OpenSourceSectionProps) {
+export function OpenSourceSection() {
+  const projects = [
+    {
+      name: "Anchor",
+      url: "https://github.com/dropanchorapp/Anchor",
+      description: "Location-based social network built on AT Protocol",
+    },
+    {
+      name: "atproto-to-fediverse",
+      url: "https://github.com/tijs/atproto-to-fediverse",
+      description: "Bridge AT Protocol content to the Fediverse",
+    },
+    {
+      name: "oauth-client-deno",
+      url: "https://github.com/tijs/oauth-client-deno",
+      description: "OAuth 2.0 client library for Deno",
+    },
+    {
+      name: "anchor-appview",
+      url: "https://github.com/dropanchorapp/anchor-appview",
+      description: "Custom appview for Drop Anchor social checkins",
+    },
+    {
+      name: "book-explorer",
+      url: "https://github.com/tijs/book-explorer",
+      description: "Explore books on AT Protocol via Bookhive",
+    },
+    {
+      name: "hono-oauth-sessions",
+      url: "https://github.com/tijs/hono-oauth-sessions",
+      description: "OAuth session management middleware for Hono",
+    },
+    {
+      name: "fastlane-plugin-translate",
+      url: "https://github.com/tijs/fastlane-plugin-translate",
+      description: "Fastlane plugin for translating app metadata",
+    },
+  ];
   return (
     <section aria-labelledby="projects-heading">
       <style>
@@ -114,26 +137,29 @@ export function OpenSourceSection({ starredRepos }: OpenSourceSectionProps) {
           More projects →
         </a>
       </div>
+
       <div className="project-list">
-        {starredRepos.map((repo) => (
+        {projects.map((project, index) => (
           <a
-            key={repo.id}
-            href={repo.html_url}
+            key={index}
+            href={project.url}
             target="_blank"
             rel="noopener noreferrer"
             className="project-item"
           >
             <div className="project-card">
               <div className="project-name">
-                <span>{repo.name}</span>
+                <span>{project.name}</span>
               </div>
               <div className="project-description">
-                {repo.description || "No description available"}
+                {project.description}
               </div>
             </div>
           </a>
         ))}
       </div>
+
+      <KofiSupport />
     </section>
   );
 }

@@ -27,6 +27,15 @@ export function AppsSection() {
       icon:
         "https://res.cloudinary.com/dru3aznlk/image/upload/v1754747200/anchor-logo-transparent_nrw70y.png",
     },
+    {
+      name: "kipclip",
+      tagline: "Find it, Kip it",
+      url: "https://kipclip.com/",
+      description:
+        "Simple, open bookmarks app for AT Protocol. Save links, organize with tags, browse from any device.",
+      icon:
+        "https://res.cloudinary.com/dru3aznlk/image/upload/v1760692589/kip-vignette_h2jwct.png",
+    },
   ];
 
   return (

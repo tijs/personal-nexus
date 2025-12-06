@@ -14,9 +14,9 @@ export function OpenSourceSection() {
       description: "Bridge AT Protocol content to the Fediverse",
     },
     {
-      name: "oauth-client-deno",
-      url: "https://github.com/tijs/oauth-client-deno",
-      description: "OAuth 2.0 client library for Deno",
+      name: "atproto-oauth",
+      url: "https://github.com/tijs/atproto-oauth",
+      description: "Framework-agnostic OAuth integration for AT Protocol",
     },
     {
       name: "anchor-appview",
@@ -29,9 +29,14 @@ export function OpenSourceSection() {
       description: "Explore books on AT Protocol via Bookhive",
     },
     {
-      name: "hono-oauth-sessions",
-      url: "https://github.com/tijs/hono-oauth-sessions",
-      description: "OAuth session management middleware for Hono",
+      name: "atproto-sessions",
+      url: "https://github.com/tijs/atproto-sessions",
+      description: "Framework-agnostic session management for AT Protocol",
+    },
+    {
+      name: "atproto-storage",
+      url: "https://github.com/tijs/atproto-storage",
+      description: "Storage implementations for AT Protocol OAuth",
     },
     {
       name: "fastlane-plugin-translate",

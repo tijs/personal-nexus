@@ -33,24 +33,64 @@ interface Book {
   };
 }
 
+// New geo structure (coordinates as strings for DAG-CBOR compliance)
+interface Geo {
+  latitude: string;
+  longitude: string;
+  altitude?: string;
+  name?: string;
+}
+
+// New embedded address structure
+interface AddressEmbedded {
+  country: string; // Required
+  name?: string;
+  street?: string;
+  locality?: string;
+  region?: string;
+  postalCode?: string;
+}
+
+// Legacy address record (for backward compatibility)
+interface AddressRecord {
+  uri: string;
+  cid: string;
+  value: {
+    name: string;
+    $type: "community.lexicon.location.address";
+    region: string;
+    country: string;
+    locality: string;
+    postalCode?: string;
+  };
+}
+
+// Updated Checkin interface with both old and new format support
 interface Checkin {
   uri: string;
   cid: string;
   value: {
     text: string;
     $type: "app.dropanchor.checkin";
-    category: string;
+    category?: string;
     createdAt: string;
-    addressRef: {
+    categoryIcon?: string;
+    categoryGroup?: string;
+
+    // NEW format (embedded)
+    address?: AddressEmbedded;
+    geo?: Geo;
+
+    // OLD format (StrongRef) - for backward compatibility
+    addressRef?: {
       cid: string;
       uri: string;
     };
-    coordinates: {
+    coordinates?: {
       latitude: number;
       longitude: number;
     };
-    categoryIcon: string;
-    categoryGroup: string;
+
     image?: {
       alt?: string;
       thumb: {
@@ -73,21 +113,14 @@ interface Checkin {
   };
 }
 
-interface Address {
-  uri: string;
-  cid: string;
-  value: {
-    name: string;
-    $type: "community.lexicon.location.address";
-    region: string;
-    country: string;
-    locality: string;
-  };
-}
-
+// Unified structure for display
 interface CheckinWithAddress {
   checkin: Checkin;
-  address: Address;
+  address: AddressEmbedded; // Always normalized to embedded format
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface JSONFeed {
@@ -323,6 +356,103 @@ async function fetchBookRecords(): Promise<{ books: Book[]; pdsUrl: string }> {
   }
 }
 
+/**
+ * Normalize a checkin to unified format (handles both old and new lexicon)
+ */
+async function normalizeCheckin(
+  checkin: Checkin,
+  agent: AtpAgent,
+  did: string,
+): Promise<CheckinWithAddress | null> {
+  const value = checkin.value;
+
+  // Extract coordinates (new format uses geo, old uses coordinates)
+  let coordinates: { latitude: number; longitude: number };
+
+  if (value.geo) {
+    // NEW format: geo object with string coordinates
+    coordinates = {
+      latitude: typeof value.geo.latitude === "number"
+        ? value.geo.latitude
+        : parseFloat(value.geo.latitude),
+      longitude: typeof value.geo.longitude === "number"
+        ? value.geo.longitude
+        : parseFloat(value.geo.longitude),
+    };
+  } else if (value.coordinates) {
+    // OLD format: coordinates object with number coordinates
+    coordinates = {
+      latitude: value.coordinates.latitude,
+      longitude: value.coordinates.longitude,
+    };
+  } else {
+    console.warn("Checkin missing coordinates/geo:", checkin.uri);
+    return null;
+  }
+
+  // Validate parsed coordinates
+  if (isNaN(coordinates.latitude) || isNaN(coordinates.longitude)) {
+    console.warn("Invalid coordinates:", checkin.uri);
+    return null;
+  }
+
+  // Extract address (new format is embedded, old needs fetching)
+  let address: AddressEmbedded;
+
+  if (value.address) {
+    // NEW format: embedded address object
+    address = value.address;
+    console.log("Using embedded address for:", checkin.uri);
+  } else if (value.addressRef) {
+    // OLD format: fetch address record separately
+    console.log(
+      "Fetching legacy address for:",
+      checkin.uri,
+      value.addressRef.uri,
+    );
+
+    try {
+      const addressResponse = await agent.com.atproto.repo.getRecord({
+        repo: did,
+        collection: "community.lexicon.location.address",
+        rkey: value.addressRef.uri.split("/").pop()!,
+      });
+
+      const addressRecord = addressResponse.data as AddressRecord;
+
+      // Convert old address format to new embedded format
+      address = {
+        name: addressRecord.value.name,
+        locality: addressRecord.value.locality,
+        region: addressRecord.value.region,
+        country: addressRecord.value.country,
+        postalCode: addressRecord.value.postalCode,
+      };
+
+      console.log(
+        "Successfully fetched legacy address:",
+        addressRecord.value.name,
+      );
+    } catch (error) {
+      console.error(
+        "Failed to fetch legacy address:",
+        value.addressRef.uri,
+        error,
+      );
+      return null;
+    }
+  } else {
+    console.warn("Checkin missing address/addressRef:", checkin.uri);
+    return null;
+  }
+
+  return {
+    checkin,
+    address,
+    coordinates,
+  };
+}
+
 async function fetchCheckins(): Promise<CheckinWithAddress[]> {
   const cacheKey = "checkins";
   const cached = cache.get(cacheKey);
@@ -357,40 +487,30 @@ async function fetchCheckins(): Promise<CheckinWithAddress[]> {
       records: response.data.records.map((r) => ({
         uri: r.uri,
         text: (r.value as any)?.text,
-        hasImage: !!(r.value as any)?.image,
-        imageStructure: (r.value as any)?.image ? "present" : "missing",
+        hasNewFormat: !!(r.value as any)?.geo && !!(r.value as any)?.address,
+        hasOldFormat: !!(r.value as any)?.coordinates &&
+          !!(r.value as any)?.addressRef,
       })),
     });
 
-    const checkins = response.data.records.slice(0, 3) as Checkin[];
+    const checkins = response.data.records as Checkin[];
 
-    // Fetch address records for each checkin
+    // Normalize checkins to unified format
     const checkinsWithAddresses: CheckinWithAddress[] = [];
 
     for (const checkin of checkins) {
       try {
-        console.log(
-          "Fetching address for checkin:",
-          checkin.value.addressRef.uri,
-        );
-
-        const addressResponse = await agent.com.atproto.repo.getRecord({
-          repo: did,
-          collection: "community.lexicon.location.address",
-          rkey: checkin.value.addressRef.uri.split("/").pop()!,
-        });
-
-        const address = addressResponse.data as Address;
-        checkinsWithAddresses.push({ checkin, address });
-
-        console.log("Successfully fetched address:", address.value.name);
+        const normalized = await normalizeCheckin(checkin, agent, did);
+        if (normalized) {
+          checkinsWithAddresses.push(normalized);
+        }
       } catch (error) {
         console.error(
-          "Failed to fetch address for checkin:",
+          "Failed to normalize checkin:",
           checkin.uri,
           error,
         );
-        // Skip this checkin if address fetch fails
+        // Skip this checkin if normalization fails
       }
     }
 

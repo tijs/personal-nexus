@@ -38,24 +38,50 @@ interface Book {
   };
 }
 
+// New geo structure (coordinates as strings for DAG-CBOR compliance)
+interface Geo {
+  latitude: string;
+  longitude: string;
+  altitude?: string;
+  name?: string;
+}
+
+// New embedded address structure
+interface AddressEmbedded {
+  country: string; // Required
+  name?: string;
+  street?: string;
+  locality?: string;
+  region?: string;
+  postalCode?: string;
+}
+
+// Updated Checkin interface with both old and new format support
 interface Checkin {
   uri: string;
   cid: string;
   value: {
     text: string;
     $type: "app.dropanchor.checkin";
-    category: string;
+    category?: string;
     createdAt: string;
-    addressRef: {
+    categoryIcon?: string;
+    categoryGroup?: string;
+
+    // NEW format (embedded)
+    address?: AddressEmbedded;
+    geo?: Geo;
+
+    // OLD format (StrongRef) - for backward compatibility
+    addressRef?: {
       cid: string;
       uri: string;
     };
-    coordinates: {
+    coordinates?: {
       latitude: number;
       longitude: number;
     };
-    categoryIcon: string;
-    categoryGroup: string;
+
     image?: {
       alt?: string;
       thumb: {
@@ -78,21 +104,14 @@ interface Checkin {
   };
 }
 
-interface Address {
-  uri: string;
-  cid: string;
-  value: {
-    name: string;
-    $type: "community.lexicon.location.address";
-    region: string;
-    country: string;
-    locality: string;
-  };
-}
-
+// Unified structure for display
 interface CheckinWithAddress {
   checkin: Checkin;
-  address: Address;
+  address: AddressEmbedded; // Always normalized to embedded format
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface AppProps {

@@ -155,6 +155,7 @@ export function AppsSection() {
         .app-item-archived .app-card {
           border-left-color: #999;
           background: rgba(128, 128, 128, 0.1);
+          cursor: default;
         }
 
         .app-item-archived .app-icon {
@@ -176,16 +177,6 @@ export function AppsSection() {
           color: #666;
         }
 
-        .app-item-archived:hover .app-card {
-          background: rgba(128, 128, 128, 0.15);
-          box-shadow: 0 4px 8px rgba(128, 128, 128, 0.2);
-        }
-
-        .app-item-archived:active .app-card {
-          background: rgba(128, 128, 128, 0.2);
-          box-shadow: 0 2px 4px rgba(128, 128, 128, 0.15);
-        }
-
         .app-tagline {
           color: #cc0055;
           font-size: 0.9rem;
@@ -205,40 +196,52 @@ export function AppsSection() {
       <div className="app-list">
         {apps.map((app, index) => {
           const isArchived = app.label === "archived";
+          const cardContent = (
+            <div className="app-card">
+              <div className="app-content">
+                <img
+                  src={app.icon}
+                  alt={`${app.name} icon`}
+                  className="app-icon"
+                  loading="lazy"
+                />
+                <div className="app-details">
+                  <div className="app-name">
+                    <span>{app.name}</span>
+                    {app.label && (
+                      <span
+                        className={`app-label${
+                          isArchived ? " app-label-archived" : ""
+                        }`}
+                      >
+                        {app.label}
+                      </span>
+                    )}
+                  </div>
+                  <div className="app-tagline">{app.tagline}</div>
+                  <div className="app-description">{app.description}</div>
+                </div>
+              </div>
+            </div>
+          );
+
+          if (isArchived) {
+            return (
+              <div key={index} className="app-item app-item-archived">
+                {cardContent}
+              </div>
+            );
+          }
+
           return (
             <a
               key={index}
               href={app.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`app-item${isArchived ? " app-item-archived" : ""}`}
+              className="app-item"
             >
-              <div className="app-card">
-                <div className="app-content">
-                  <img
-                    src={app.icon}
-                    alt={`${app.name} icon`}
-                    className="app-icon"
-                    loading="lazy"
-                  />
-                  <div className="app-details">
-                    <div className="app-name">
-                      <span>{app.name}</span>
-                      {app.label && (
-                        <span
-                          className={`app-label${
-                            isArchived ? " app-label-archived" : ""
-                          }`}
-                        >
-                          {app.label}
-                        </span>
-                      )}
-                    </div>
-                    <div className="app-tagline">{app.tagline}</div>
-                    <div className="app-description">{app.description}</div>
-                  </div>
-                </div>
-              </div>
+              {cardContent}
             </a>
           );
         })}

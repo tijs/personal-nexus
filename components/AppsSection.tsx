@@ -3,14 +3,6 @@ import React from "https://esm.sh/react@18";
 export function AppsSection() {
   const apps = [
     {
-      name: "Flexible",
-      tagline: "Movement timer",
-      url: "https://flexiblemovement.com",
-      description: "Track your (rehab) exercises on iOS",
-      icon:
-        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/85/75/bf/8575bf1c-7522-db8d-44bf-26f4cc5fdd18/AppIcon-0-0-1x_U007ephone-0-1-85-220.jpeg/540x540bb.jpg",
-    },
-    {
       name: "Kilowatt",
       tagline: "EV charging timer for iOS",
       url: "https://kilowattcharging.com",
@@ -35,6 +27,25 @@ export function AppsSection() {
         "Simple, open bookmarks app for AT Protocol. Save links, organize with tags, browse from any device.",
       icon:
         "https://res.cloudinary.com/dru3aznlk/image/upload/v1760692589/kip-vignette_h2jwct.png",
+    },
+    {
+      name: "Floating Head",
+      tagline: "Add some You to your video",
+      url:
+        "https://apps.apple.com/us/app/floating-head-show-yourself/id1565946661",
+      description:
+        "Create a floating webcam panel that stays visible on screen for screencasts, tutorials, and live streams on Mac",
+      icon:
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/30/77/90/30779057-8bba-1143-a1f9-8f7800101a79/AppIcon-0-0-85-220-0-5-0-2x.png/540x540bb.jpg",
+    },
+    {
+      name: "Flexible",
+      tagline: "Movement timer",
+      url: "https://flexiblemovement.com",
+      description: "Track your (rehab) exercises on iOS",
+      icon:
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/85/75/bf/8575bf1c-7522-db8d-44bf-26f4cc5fdd18/AppIcon-0-0-1x_U007ephone-0-1-85-220.jpeg/540x540bb.jpg",
+      label: "archived",
     },
   ];
 
@@ -137,6 +148,44 @@ export function AppsSection() {
           text-transform: uppercase;
         }
 
+        .app-label-archived {
+          background: #888;
+        }
+
+        .app-item-archived .app-card {
+          border-left-color: #999;
+          background: rgba(128, 128, 128, 0.1);
+        }
+
+        .app-item-archived .app-icon {
+          filter: grayscale(100%);
+          opacity: 0.6;
+          background: rgba(128, 128, 128, 0.2);
+          border-color: rgba(128, 128, 128, 0.3);
+        }
+
+        .app-item-archived .app-name {
+          color: #666;
+        }
+
+        .app-item-archived .app-tagline {
+          color: #888;
+        }
+
+        .app-item-archived .app-description {
+          color: #666;
+        }
+
+        .app-item-archived:hover .app-card {
+          background: rgba(128, 128, 128, 0.15);
+          box-shadow: 0 4px 8px rgba(128, 128, 128, 0.2);
+        }
+
+        .app-item-archived:active .app-card {
+          background: rgba(128, 128, 128, 0.2);
+          box-shadow: 0 2px 4px rgba(128, 128, 128, 0.15);
+        }
+
         .app-tagline {
           color: #cc0055;
           font-size: 0.9rem;
@@ -154,35 +203,45 @@ export function AppsSection() {
 
       <h2 id="apps-heading">Apps i've Made</h2>
       <div className="app-list">
-        {apps.map((app, index) => (
-          <a
-            key={index}
-            href={app.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="app-item"
-          >
-            <div className="app-card">
-              <div className="app-content">
-                <img
-                  src={app.icon}
-                  alt={`${app.name} icon`}
-                  className="app-icon"
-                  loading="lazy"
-                />
-                <div className="app-details">
-                  <div className="app-name">
-                    <span>{app.name}</span>
-                    {app.label && <span className="app-label">{app.label}
-                    </span>}
+        {apps.map((app, index) => {
+          const isArchived = app.label === "archived";
+          return (
+            <a
+              key={index}
+              href={app.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`app-item${isArchived ? " app-item-archived" : ""}`}
+            >
+              <div className="app-card">
+                <div className="app-content">
+                  <img
+                    src={app.icon}
+                    alt={`${app.name} icon`}
+                    className="app-icon"
+                    loading="lazy"
+                  />
+                  <div className="app-details">
+                    <div className="app-name">
+                      <span>{app.name}</span>
+                      {app.label && (
+                        <span
+                          className={`app-label${
+                            isArchived ? " app-label-archived" : ""
+                          }`}
+                        >
+                          {app.label}
+                        </span>
+                      )}
+                    </div>
+                    <div className="app-tagline">{app.tagline}</div>
+                    <div className="app-description">{app.description}</div>
                   </div>
-                  <div className="app-tagline">{app.tagline}</div>
-                  <div className="app-description">{app.description}</div>
                 </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     </section>
   );

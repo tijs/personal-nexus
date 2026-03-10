@@ -8,46 +8,40 @@ export function ProfileHeader() {
           {`
           .profile-container {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
+            padding-top: 1rem;
           }
 
           .profile-image {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            margin: 0 auto 1rem auto;
+            margin: 0 auto 1.25rem auto;
             display: block;
-            border: 4px solid #934790;
-            filter: drop-shadow(0 0 10px rgba(147, 71, 144, 0.3));
+            border: 3px solid rgba(92, 45, 110, 0.15);
+            box-shadow: 0 4px 20px rgba(45, 27, 51, 0.1);
           }
 
           .profile-name {
             font-family: 'Caprasimo', serif;
-            font-size: 2.5rem;
-            color: #6a0066;
-            margin-bottom: 0.5rem;
+            font-size: 2.25rem;
+            color: var(--color-primary);
+            margin-bottom: 0.3rem;
             font-weight: 400;
+            letter-spacing: -0.02em;
           }
 
           .profile-title {
-            font-size: 1.3rem;
-            color: #cc0055;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: var(--color-accent);
+            font-weight: 500;
+            margin-bottom: 0.3rem;
           }
 
           .profile-location {
-            font-size: 1rem;
-            color: #6a0066;
-            opacity: 0.8;
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
             margin-bottom: 0.5rem;
-          }
-
-          .profile-work {
-            font-size: 1rem;
-            color: #6a0066;
-            opacity: 0.8;
-            margin-bottom: 1rem;
           }
         `}
         </style>

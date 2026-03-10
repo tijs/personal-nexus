@@ -596,7 +596,7 @@ export default async function handler() {
     <link rel="icon" type="image/x-icon" href="https://github.com/tijs.png">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Caprasimo&family=Outfit:wght@300;400;500;600;700&family=Lato:wght@400;700;900&display=swap');
-      
+
       * {
         margin: 0;
         padding: 0;
@@ -605,8 +605,10 @@ export default async function handler() {
       body {
         font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.6;
-        color: #6a0066;
-        background: #e8d4b7;
+        color: #2d1b33;
+        background: #f5efe6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       .profile-name {
         font-family: 'Caprasimo', serif !important;

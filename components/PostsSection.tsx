@@ -17,9 +17,8 @@ export function PostsSection({ posts }: PostsSectionProps) {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      // Check if date is valid
       if (isNaN(date.getTime())) {
-        return dateString; // Return original string if invalid
+        return dateString;
       }
       return date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -28,14 +27,12 @@ export function PostsSection({ posts }: PostsSectionProps) {
       });
     } catch (error) {
       console.error("Error formatting date:", dateString, error);
-      return dateString; // Return original string if error
+      return dateString;
     }
   };
 
   const extractSummary = (html: string, summary?: string) => {
     if (summary) return summary;
-
-    // Simple HTML stripping and truncation
     const text = html.replace(/<[^>]*>/g, "").trim();
     return text.length > 150 ? text.substring(0, 150) + "..." : text;
   };
@@ -47,32 +44,27 @@ export function PostsSection({ posts }: PostsSectionProps) {
         .posts-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
+          align-items: baseline;
+          margin-bottom: 1.25rem;
         }
 
         .posts-link {
-          color: #cc0055;
+          color: var(--color-text-muted);
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 500;
+          transition: color var(--transition);
         }
 
         .posts-link:hover {
-          text-decoration: underline;
+          color: var(--color-accent);
+          text-decoration: none;
         }
 
         .posts-list {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        @media (min-width: 800px) {
-          .posts-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
         }
 
         @media (max-width: 768px) {
@@ -93,49 +85,46 @@ export function PostsSection({ posts }: PostsSectionProps) {
         }
 
         .post-card {
-          padding: 1rem;
-          border-left: 3px solid rgb(32, 113, 227);
-          background: rgb(255, 254, 245);
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          padding: 1.25rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
+          transition: all var(--transition);
           height: 100%;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 1px 3px rgba(32, 113, 227, 0.1);
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--color-border);
         }
 
         .post-item:hover .post-card {
-          background: rgb(252, 251, 242);
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(32, 113, 227, 0.15);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .post-item:active .post-card {
-          transform: translateY(0px);
-          background: rgb(250, 249, 240);
-          box-shadow: 0 2px 6px rgba(32, 113, 227, 0.12);
+          transform: translateY(0);
+        }
+
+        .post-date {
+          color: var(--color-text-muted);
+          font-size: 0.8rem;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
         }
 
         .post-title {
           font-weight: 600;
-          color: rgb(39, 39, 39);
+          color: var(--color-text);
           margin-bottom: 0.5rem;
           font-size: 1rem;
-          line-height: 1.3;
-        }
-
-        .post-date {
-          color: rgb(32, 113, 227);
-          font-size: 0.8rem;
-          margin-bottom: 0.75rem;
+          line-height: 1.35;
         }
 
         .post-summary {
-          color: rgb(39, 39, 39);
-          opacity: 0.7;
-          font-size: 0.9rem;
-          line-height: 1.4;
+          color: var(--color-text-muted);
+          font-size: 0.88rem;
+          line-height: 1.5;
           flex-grow: 1;
         }
       `}
@@ -149,7 +138,7 @@ export function PostsSection({ posts }: PostsSectionProps) {
           rel="noopener noreferrer"
           className="posts-link"
         >
-          View all posts →
+          View all posts &rarr;
         </a>
       </div>
 
@@ -163,8 +152,8 @@ export function PostsSection({ posts }: PostsSectionProps) {
             className="post-item"
           >
             <div className="post-card">
-              <h3 className="post-title">{post.title}</h3>
               <div className="post-date">{formatDate(post.date_modified)}</div>
+              <h3 className="post-title">{post.title}</h3>
               <div className="post-summary">
                 {extractSummary(post.content_html, post.summary)}
               </div>

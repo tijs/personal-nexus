@@ -110,7 +110,6 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
   };
 
   const getCheckinId = (uri: string) => {
-    // Extract the ID from URI like "at://did:plc:aq7owa5y7ndc2hzjz37wy7ma/app.dropanchor.checkin/3lyn5rkrkqg2n"
     return uri.split("/").pop();
   };
 
@@ -124,7 +123,6 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
       return null;
     }
     const did = checkin.uri.split("/")[2];
-    // The ref can be either a CID object or an object with $link
     const ref = checkin.value.image.thumb.ref as any;
     const cid = ref.$link || ref.toString();
     return `${pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${cid}`;
@@ -137,32 +135,27 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
         .checkins-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
+          align-items: baseline;
+          margin-bottom: 1.25rem;
         }
 
         .checkins-link {
-          color: #cc0055;
+          color: var(--color-text-muted);
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 500;
+          transition: color var(--transition);
         }
 
         .checkins-link:hover {
-          text-decoration: underline;
+          color: var(--color-accent);
+          text-decoration: none;
         }
 
         .checkins-list {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        @media (min-width: 800px) {
-          .checkins-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
         }
 
         @media (max-width: 768px) {
@@ -183,37 +176,34 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
         }
 
         .checkin-card {
-          padding: 1rem;
-          border-left: 3px solid #e91e63;
-          background: #f9fafb;
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          padding: 1.25rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
+          transition: all var(--transition);
           height: 100%;
           display: flex;
           gap: 1rem;
-          box-shadow: 0 1px 3px rgba(233, 30, 99, 0.1);
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--color-border);
         }
 
         .checkin-item:hover .checkin-card {
-          background: #f3f4f6;
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(233, 30, 99, 0.15);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .checkin-item:active .checkin-card {
-          transform: translateY(0px);
-          background: #f1f3f4;
-          box-shadow: 0 2px 6px rgba(233, 30, 99, 0.12);
+          transform: translateY(0);
         }
 
         .checkin-thumbnail {
-          width: 80px;
-          height: 80px;
+          width: 72px;
+          height: 72px;
           flex-shrink: 0;
-          border-radius: 4px;
+          border-radius: 8px;
           object-fit: cover;
-          background: #e5e7eb;
+          background: var(--color-accent-soft);
         }
 
         .checkin-content {
@@ -225,22 +215,22 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
 
         .checkin-text {
           font-weight: 600;
-          color: rgb(39, 39, 39);
-          margin-bottom: 0.5rem;
-          font-size: 1rem;
-          line-height: 1.3;
+          color: var(--color-text);
+          margin-bottom: 0.35rem;
+          font-size: 0.95rem;
+          line-height: 1.35;
         }
 
         .checkin-date {
-          color: #c91853;
+          color: var(--color-text-muted);
           font-size: 0.8rem;
-          margin-bottom: 0.75rem;
+          margin-bottom: 0.35rem;
+          font-weight: 500;
         }
 
         .checkin-location {
-          color: #4f5d73;
-          font-size: 0.9rem;
-          font-weight: 500;
+          color: var(--color-text-muted);
+          font-size: 0.85rem;
           flex-grow: 1;
         }
       `}
@@ -254,7 +244,7 @@ export function CheckinsSection({ checkins, pdsUrl }: CheckinsSectionProps) {
           rel="noopener noreferrer"
           className="checkins-link"
         >
-          View all check-ins →
+          View all check-ins &rarr;
         </a>
       </div>
 

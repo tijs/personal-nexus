@@ -55,15 +55,8 @@ export function AppsSection() {
         {`
         .app-list {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        @media (min-width: 800px) {
-          .app-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
         }
 
         @media (max-width: 768px) {
@@ -84,31 +77,31 @@ export function AppsSection() {
         }
 
         .app-card {
-          padding: 1rem;
-          border-left: 3px solid #934790;
-          background: rgba(147, 71, 144, 0.1);
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          padding: 1.25rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
+          transition: all var(--transition);
           height: 100%;
           display: flex;
           flex-direction: column;
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--color-border);
         }
 
         .app-content {
           display: flex;
-          gap: 0.75rem;
+          gap: 1rem;
           height: 100%;
         }
 
         .app-icon {
-          width: 60px;
-          height: 60px;
+          width: 56px;
+          height: 56px;
           flex-shrink: 0;
           border-radius: 12px;
           object-fit: cover;
-          background: rgba(147, 71, 144, 0.2);
-          border: 1px solid rgba(147, 71, 144, 0.3);
+          background: var(--color-accent-soft);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .app-details {
@@ -118,76 +111,71 @@ export function AppsSection() {
         }
 
         .app-item:hover .app-card {
-          background: rgba(147, 71, 144, 0.2);
           transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(147, 71, 144, 0.3);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .app-item:active .app-card {
-          transform: translateY(0px);
-          background: rgba(147, 71, 144, 0.25);
-          box-shadow: 0 2px 4px rgba(147, 71, 144, 0.2);
+          transform: translateY(0);
         }
 
         .app-name {
           font-weight: 600;
-          color: #6a0066;
-          margin-bottom: 0.25rem;
+          color: var(--color-text);
+          margin-bottom: 0.2rem;
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          font-size: 0.95rem;
         }
 
         .app-label {
-          background: #cc0055;
+          background: var(--color-accent);
           color: white;
-          padding: 0.125rem 0.5rem;
-          border-radius: 12px;
-          font-size: 0.75rem;
-          font-weight: 500;
+          padding: 0.1rem 0.45rem;
+          border-radius: 5px;
+          font-size: 0.65rem;
+          font-weight: 600;
           text-transform: uppercase;
+          letter-spacing: 0.03em;
         }
 
         .app-label-archived {
-          background: #888;
+          background: #9ca3af;
         }
 
         .app-item-archived .app-card {
-          border-left-color: #999;
-          background: rgba(128, 128, 128, 0.1);
+          background: rgba(255, 255, 255, 0.5);
+          border-color: rgba(0, 0, 0, 0.05);
           cursor: default;
         }
 
         .app-item-archived .app-icon {
           filter: grayscale(100%);
-          opacity: 0.6;
-          background: rgba(128, 128, 128, 0.2);
-          border-color: rgba(128, 128, 128, 0.3);
+          opacity: 0.5;
         }
 
         .app-item-archived .app-name {
-          color: #666;
+          color: var(--color-text-muted);
         }
 
-        .app-item-archived .app-tagline {
-          color: #888;
-        }
-
+        .app-item-archived .app-tagline,
         .app-item-archived .app-description {
-          color: #666;
+          color: #9ca3af;
         }
 
         .app-tagline {
-          color: #cc0055;
-          font-size: 0.9rem;
+          color: var(--color-accent);
+          font-size: 0.85rem;
           font-style: italic;
-          margin-bottom: 0.25rem;
+          margin-bottom: 0.2rem;
         }
 
         .app-description {
-          color: #6a0066;
-          opacity: 0.8;
-          font-size: 0.9rem;
+          color: var(--color-text-muted);
+          font-size: 0.85rem;
+          line-height: 1.45;
         }
       `}
       </style>

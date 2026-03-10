@@ -2,8 +2,8 @@ import React from "https://esm.sh/react@18";
 
 const GitHubIcon = () => (
   <svg
-    width="20"
-    height="20"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -17,8 +17,8 @@ const GitHubIcon = () => (
 
 const LinkedInIcon = () => (
   <svg
-    width="20"
-    height="20"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -34,8 +34,8 @@ const LinkedInIcon = () => (
 
 const BlueskyIcon = () => (
   <svg
-    width="20"
-    height="20"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     fill="currentColor"
   >
@@ -67,27 +67,15 @@ export function ExternalLinks() {
       <style>
         {`
         .links-container {
-          margin-top: 2rem;
+          margin-top: 1rem;
           padding-top: 2rem;
-          border-top: 1px solid rgba(106, 0, 102, 0.2);
+          border-top: 1px solid var(--color-border);
         }
 
         .links-list {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-        }
-
-        @media (min-width: 800px) {
-          .links-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .links-list {
-            grid-template-columns: 1fr;
-          }
+          display: flex;
+          justify-content: center;
+          gap: 0.75rem;
         }
 
         .link-item {
@@ -103,47 +91,37 @@ export function ExternalLinks() {
         .link-card {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          padding: 0.75rem 1rem;
-          background: rgba(147, 71, 144, 0.1);
-          border-left: 3px solid #934790;
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          gap: 0.5rem;
+          padding: 0.6rem 1.1rem;
+          background: var(--color-bg-card);
+          border-radius: 8px;
+          transition: all var(--transition);
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-sm);
         }
 
         .link-item:hover .link-card {
-          background: rgba(147, 71, 144, 0.2);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(147, 71, 144, 0.3);
-        }
-
-        .link-item:active .link-card {
-          transform: translateY(0px);
-          background: rgba(147, 71, 144, 0.25);
-          box-shadow: 0 2px 4px rgba(147, 71, 144, 0.2);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .link-name {
-          color: #6a0066;
+          color: var(--color-text);
           font-weight: 500;
+          font-size: 0.88rem;
         }
 
         .link-icon {
           display: flex;
           align-items: center;
-          color: #6a0066;
-        }
-
-        .link-icon svg {
-          width: 20px;
-          height: 20px;
+          color: var(--color-text-muted);
         }
 
         @media (max-width: 480px) {
           .links-list {
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
           }
         }
       `}

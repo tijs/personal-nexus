@@ -7,27 +7,28 @@ export function KofiSupport() {
         {`
         .kofi-support {
           width: 100%;
-          padding: 2rem 1.5rem;
-          margin-bottom: 1.5rem;
-          background: rgba(255, 255, 255, 0.4);
-          border-radius: 8px;
+          padding: 1.5rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
           text-align: center;
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-sm);
         }
 
         .kofi-support-message {
-          color: #6a0066;
+          color: var(--color-text-muted);
           margin-bottom: 1rem;
-          font-size: 1rem;
+          font-size: 0.9rem;
           line-height: 1.6;
         }
 
         .kofi-support-button-wrapper {
           display: inline-block;
+          transition: opacity var(--transition);
         }
 
         .kofi-support-button-wrapper:hover {
           opacity: 0.85;
-          transition: opacity 0.2s ease;
         }
       `}
       </style>
@@ -35,7 +36,7 @@ export function KofiSupport() {
       <div className="kofi-support-message">
         If you find these projects helpful and they've saved you some time,
         consider buying me a coffee! It helps me keep building open source
-        tools. ☕
+        tools.
       </div>
       <div className="kofi-support-button-wrapper">
         <a href="https://ko-fi.com/D1D6P4LAR" target="_blank">

@@ -128,6 +128,22 @@ export function App(
     <div className="app">
       <style>
         {`
+        :root {
+          --color-bg: #f5efe6;
+          --color-bg-card: #ffffff;
+          --color-text: #2d1b33;
+          --color-text-muted: #6b5a72;
+          --color-primary: #5c2d6e;
+          --color-accent: #c4365a;
+          --color-accent-soft: rgba(196, 54, 90, 0.08);
+          --color-border: rgba(93, 45, 110, 0.1);
+          --color-shadow: rgba(45, 27, 51, 0.06);
+          --radius: 10px;
+          --shadow-sm: 0 1px 3px var(--color-shadow), 0 1px 2px var(--color-shadow);
+          --shadow-md: 0 4px 16px var(--color-shadow), 0 2px 4px var(--color-shadow);
+          --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
           margin: 0;
           padding: 0;
@@ -135,16 +151,16 @@ export function App(
         }
 
         body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           line-height: 1.6;
-          color: #6a0066;
-          background: #e8d4b7;
+          color: var(--color-text);
+          background: var(--color-bg);
         }
 
         .app {
-          max-width: 1200px;
+          max-width: 1100px;
           margin: 0 auto;
-          padding: 2rem 1rem;
+          padding: 3rem 2rem;
         }
 
         h1, h2, h3 {
@@ -154,14 +170,16 @@ export function App(
 
         h1 {
           font-size: 2rem;
-          color: #6a0066;
+          color: var(--color-primary);
         }
 
         h2 {
-          font-size: 1.5rem;
-          color: #cc0055;
-          margin-top: 2rem;
-          margin-bottom: 1rem;
+          font-size: 1.25rem;
+          color: var(--color-text);
+          margin-top: 0;
+          margin-bottom: 1.25rem;
+          font-weight: 700;
+          letter-spacing: -0.01em;
         }
 
         ul {
@@ -174,7 +192,7 @@ export function App(
         }
 
         a {
-          color: #cc0055;
+          color: var(--color-accent);
           text-decoration: none;
         }
 
@@ -186,9 +204,17 @@ export function App(
           margin-bottom: 1rem;
         }
 
+        section {
+          margin-bottom: 3rem;
+        }
+
         @media (max-width: 768px) {
           .app {
-            padding: 1rem 0.5rem;
+            padding: 1.5rem 1rem;
+          }
+
+          section {
+            margin-bottom: 2rem;
           }
         }
       `}

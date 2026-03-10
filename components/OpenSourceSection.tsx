@@ -55,15 +55,9 @@ export function OpenSourceSection() {
         {`
         .project-list {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
           margin-bottom: 2rem;
-        }
-
-        @media (min-width: 800px) {
-          .project-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
         }
 
         @media (max-width: 768px) {
@@ -84,67 +78,69 @@ export function OpenSourceSection() {
         }
 
         .project-card {
-          padding: 1rem;
-          border-left: 3px solid #cc0055;
-          background: rgba(204, 0, 85, 0.1);
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          padding: 1.25rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
+          transition: all var(--transition);
+          height: 100%;
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--color-border);
         }
 
         .project-item:hover .project-card {
-          background: rgba(204, 0, 85, 0.2);
           transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(204, 0, 85, 0.3);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .project-item:active .project-card {
-          transform: translateY(0px);
-          background: rgba(204, 0, 85, 0.25);
-          box-shadow: 0 2px 4px rgba(204, 0, 85, 0.2);
+          transform: translateY(0);
         }
 
         .project-name {
           font-weight: 600;
-          color: #6a0066;
-          margin-bottom: 0.25rem;
+          color: var(--color-text);
+          margin-bottom: 0.3rem;
+          font-size: 0.95rem;
         }
 
         .project-description {
-          color: #6a0066;
-          opacity: 0.8;
-          font-size: 0.9rem;
+          color: var(--color-text-muted);
+          font-size: 0.85rem;
+          line-height: 1.45;
         }
 
         .projects-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
+          align-items: baseline;
+          margin-bottom: 1.25rem;
         }
 
         .projects-link {
-          color: #cc0055;
+          color: var(--color-text-muted);
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 500;
+          transition: color var(--transition);
         }
 
         .projects-link:hover {
-          text-decoration: underline;
+          color: var(--color-accent);
+          text-decoration: none;
         }
       `}
       </style>
 
       <div className="projects-header">
-        <h2 id="projects-heading">My Open Source Projects</h2>
+        <h2 id="projects-heading">Open Source</h2>
         <a
           href="https://github.com/tijs"
           target="_blank"
           rel="noopener noreferrer"
           className="projects-link"
         >
-          More projects →
+          More on GitHub &rarr;
         </a>
       </div>
 

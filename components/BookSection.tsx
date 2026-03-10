@@ -46,24 +46,19 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
       return null;
     }
 
-    // Handle both CID object and string formats
     let cid: string;
     if (typeof book.value.cover.ref === "string") {
       cid = book.value.cover.ref;
     } else if (book.value.cover.ref.$link) {
       cid = book.value.cover.ref.$link;
     } else if (book.value.cover.ref.toString) {
-      // For CID objects, convert to string
       cid = book.value.cover.ref.toString();
     } else {
       console.log("Unknown cover ref format:", book.value.cover.ref);
       return null;
     }
 
-    // Extract DID from the book URI (at://did:plc:xyz/collection/rkey)
     const did = book.uri.split("/")[2];
-
-    // Construct the blob URL
     const blobUrl =
       `${pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${cid}`;
     console.log(`Constructing blob URL for ${book.value.title}: ${blobUrl}`);
@@ -86,13 +81,13 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "buzz.bookhive.defs#wantToRead":
-        return "#4f46e5"; // Darker indigo
+        return { bg: "rgba(79, 70, 229, 0.1)", text: "#4f46e5" };
       case "buzz.bookhive.defs#reading":
-        return "#d97706"; // Darker amber
+        return { bg: "rgba(217, 119, 6, 0.1)", text: "#b45309" };
       case "buzz.bookhive.defs#finished":
-        return "#059669"; // Darker emerald
+        return { bg: "rgba(5, 150, 105, 0.1)", text: "#047857" };
       default:
-        return "#4b5563"; // Darker gray
+        return { bg: "rgba(75, 85, 99, 0.1)", text: "#4b5563" };
     }
   };
 
@@ -103,32 +98,27 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
         .books-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
+          align-items: baseline;
+          margin-bottom: 1.25rem;
         }
 
         .books-link {
-          color: #cc0055;
+          color: var(--color-text-muted);
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 500;
+          transition: color var(--transition);
         }
 
         .books-link:hover {
-          text-decoration: underline;
+          color: var(--color-accent);
+          text-decoration: none;
         }
 
         .books-list {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        @media (min-width: 800px) {
-          .books-list {
-            grid-template-columns: repeat(3, 1fr);
-          }
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
         }
 
         @media (max-width: 768px) {
@@ -149,32 +139,31 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
         }
 
         .book-card {
-          padding: 1rem;
-          background: #f5f1e8;
-          border-left: 3px solid #8b4513;
-          border-radius: 0 4px 4px 0;
-          transition: all 0.2s ease;
-          user-select: none;
+          padding: 1.25rem;
+          background: var(--color-bg-card);
+          border-radius: var(--radius);
+          transition: all var(--transition);
           height: 100%;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 2px 4px rgba(139, 69, 19, 0.1);
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--color-border);
         }
 
         .book-content {
           display: flex;
-          gap: 0.75rem;
+          gap: 1rem;
           height: 100%;
         }
 
         .book-cover {
-          width: 60px;
-          height: 90px;
+          width: 56px;
+          height: 84px;
           flex-shrink: 0;
           border-radius: 4px;
           object-fit: cover;
-          background: #e6dcc6;
-          border: 1px solid #d4c4a8;
+          background: var(--color-accent-soft);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .book-details {
@@ -184,61 +173,53 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
         }
 
         .book-item:hover .book-card {
-          background: #f0ebe0;
           transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(139, 69, 19, 0.15);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
         }
 
         .book-item:active .book-card {
-          transform: translateY(0px);
-          background: #ede6d7;
-          box-shadow: 0 2px 4px rgba(139, 69, 19, 0.12);
+          transform: translateY(0);
         }
 
         .book-header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          margin-bottom: 0.75rem;
+          gap: 0.5rem;
+          margin-bottom: 0.35rem;
         }
 
         .book-title {
           font-weight: 600;
-          color: #2c1810;
+          color: var(--color-text);
           margin: 0;
-          font-size: 1rem;
-          line-height: 1.3;
+          font-size: 0.95rem;
+          line-height: 1.35;
           flex-grow: 1;
         }
 
         .book-status {
-          font-size: 0.75rem;
-          font-weight: 500;
-          padding: 0.25rem 0.5rem;
-          border-radius: 12px;
-          color: white;
-          margin-left: 0.75rem;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 0.2rem 0.5rem;
+          border-radius: 6px;
           white-space: nowrap;
+          flex-shrink: 0;
         }
 
         .book-date {
-          color: #6b3410;
+          color: var(--color-text-muted);
           font-size: 0.8rem;
-          margin-bottom: 0.75rem;
+          margin-bottom: 0.35rem;
+          font-weight: 500;
         }
 
-        .book-description {
-          color: #2c1810;
-          opacity: 0.8;
-          font-size: 0.9rem;
+        .book-authors {
+          color: var(--color-text-muted);
+          font-size: 0.85rem;
           line-height: 1.4;
           flex-grow: 1;
-        }
-
-        .book-rating {
-          color: #ff0066;
-          font-size: 0.8rem;
-          margin-top: 0.5rem;
         }
       `}
       </style>
@@ -251,54 +232,58 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
           rel="noopener noreferrer"
           className="books-link"
         >
-          View all book updates →
+          View all book updates &rarr;
         </a>
       </div>
 
       <div className="books-list">
-        {books.map((book) => (
-          <a
-            key={book.uri}
-            href={`https://bookhive.buzz/books/${book.value.hiveId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="book-item"
-          >
-            <div className="book-card">
-              <div className="book-content">
-                {getCoverImageUrl(book) && (
-                  <img
-                    src={getCoverImageUrl(book)!}
-                    alt={`Cover of ${book.value.title}`}
-                    className="book-cover"
-                    loading="lazy"
-                  />
-                )}
-                <div className="book-details">
-                  <div className="book-header">
-                    <h3 className="book-title">{book.value.title}</h3>
-                    <span
-                      className="book-status"
-                      style={{
-                        backgroundColor: getStatusColor(book.value.status),
-                      }}
-                    >
-                      {getStatusLabel(book.value.status)}
-                    </span>
-                  </div>
-                  <div className="book-date">
-                    {formatDate(book.value.createdAt)}
-                  </div>
-                  {book.value.authors && (
-                    <div className="book-description">
-                      by {book.value.authors}
-                    </div>
+        {books.map((book) => {
+          const statusColor = getStatusColor(book.value.status);
+          return (
+            <a
+              key={book.uri}
+              href={`https://bookhive.buzz/books/${book.value.hiveId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="book-item"
+            >
+              <div className="book-card">
+                <div className="book-content">
+                  {getCoverImageUrl(book) && (
+                    <img
+                      src={getCoverImageUrl(book)!}
+                      alt={`Cover of ${book.value.title}`}
+                      className="book-cover"
+                      loading="lazy"
+                    />
                   )}
+                  <div className="book-details">
+                    <div className="book-header">
+                      <h3 className="book-title">{book.value.title}</h3>
+                      <span
+                        className="book-status"
+                        style={{
+                          backgroundColor: statusColor.bg,
+                          color: statusColor.text,
+                        }}
+                      >
+                        {getStatusLabel(book.value.status)}
+                      </span>
+                    </div>
+                    <div className="book-date">
+                      {formatDate(book.value.createdAt)}
+                    </div>
+                    {book.value.authors && (
+                      <div className="book-authors">
+                        by {book.value.authors}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     </section>
   );

@@ -44,6 +44,16 @@ export function OpenSourceSection() {
       description: "Fastlane plugin for translating app metadata",
     },
     {
+      name: "kipclip-cli",
+      url: "https://github.com/tijs/kipclip-cli",
+      description: "CLI tool for kipclip bookmarks on AT Protocol",
+    },
+    {
+      name: "oauth-client-deno",
+      url: "https://github.com/tijs/oauth-client-deno",
+      description: "OAuth client implementation for Deno",
+    },
+    {
       name: "kipclip-appview",
       url: "https://github.com/tijs/kipclip-appview",
       description: "Custom appview for kipclip bookmarks on AT Protocol",

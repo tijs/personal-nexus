@@ -33,9 +33,8 @@ export function AppsSection() {
       tagline: "Back up your iCloud Photos to your storage",
       url: "https://attic.photos/",
       description:
-        "Command-line tool that backs up your macOS Photos library to S3-compatible storage. Preserves metadata, runs incrementally, and verifies via checksums.",
-      icon:
-        "https://attic.photos/attic-logo-transparent.png",
+        "Back up your macOS Photos library to S3-compatible storage",
+      icon: "https://attic.photos/attic-logo-transparent.png",
     },
     {
       name: "Floating Head",

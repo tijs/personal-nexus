@@ -29,6 +29,15 @@ export function AppsSection() {
         "https://res.cloudinary.com/dru3aznlk/image/upload/v1760692589/kip-vignette_h2jwct.png",
     },
     {
+      name: "Attic",
+      tagline: "Back up your iCloud Photos to your storage",
+      url: "https://attic.photos/",
+      description:
+        "Command-line tool that backs up your macOS Photos library to S3-compatible storage. Preserves metadata, runs incrementally, and verifies via checksums.",
+      icon:
+        "https://attic.photos/attic-logo-transparent.png",
+    },
+    {
       name: "Floating Head",
       tagline: "Add some You to your video",
       url:

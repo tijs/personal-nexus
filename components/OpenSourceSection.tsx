@@ -4,6 +4,18 @@ import { KofiSupport } from "./KofiSupport.tsx";
 export function OpenSourceSection() {
   const projects = [
     {
+      name: "attic",
+      url: "https://github.com/tijs/attic",
+      description:
+        "Back up your iCloud Photos library to S3-compatible storage",
+    },
+    {
+      name: "ladder",
+      url: "https://github.com/tijs/ladder",
+      description:
+        "macOS CLI to export original photos and videos from Photos using PhotoKit",
+    },
+    {
       name: "Anchor",
       url: "https://github.com/dropanchorapp/Anchor",
       description: "Location-based social network built on AT Protocol",

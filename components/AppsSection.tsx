@@ -32,8 +32,7 @@ export function AppsSection() {
       name: "Attic",
       tagline: "Back up your iCloud Photos to your storage",
       url: "https://attic.photos/",
-      description:
-        "Back up your macOS Photos library to S3-compatible storage",
+      description: "Back up your macOS Photos library to S3-compatible storage",
       icon: "https://attic.photos/attic-logo-transparent.png",
     },
     {

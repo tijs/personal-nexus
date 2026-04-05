@@ -8,67 +8,86 @@ export function OpenSourceSection() {
       url: "https://github.com/tijs/attic",
       description:
         "Back up your iCloud Photos library to S3-compatible storage",
+      tags: ["macos"],
     },
     {
       name: "ladder",
       url: "https://github.com/tijs/ladder",
       description:
         "macOS CLI to export original photos and videos from Photos using PhotoKit",
+      tags: ["macos"],
     },
     {
       name: "Anchor",
       url: "https://github.com/dropanchorapp/Anchor",
       description: "Location-based social network built on AT Protocol",
+      tags: ["atproto", "ios"],
     },
     {
       name: "atproto-to-fediverse",
       url: "https://github.com/tijs/atproto-to-fediverse",
       description: "Bridge AT Protocol content to the Fediverse",
+      tags: ["atproto"],
     },
     {
       name: "atproto-oauth",
       url: "https://github.com/tijs/atproto-oauth",
       description: "Framework-agnostic OAuth integration for AT Protocol",
+      tags: ["atproto"],
     },
     {
       name: "anchor-appview",
       url: "https://github.com/dropanchorapp/anchor-appview",
       description: "Custom appview for Drop Anchor social checkins",
+      tags: ["atproto"],
     },
     {
       name: "book-explorer",
       url: "https://github.com/tijs/book-explorer",
       description: "Explore books on AT Protocol via Bookhive",
+      tags: ["atproto"],
     },
     {
       name: "atproto-sessions",
       url: "https://github.com/tijs/atproto-sessions",
       description: "Framework-agnostic session management for AT Protocol",
+      tags: ["atproto"],
     },
     {
       name: "atproto-storage",
       url: "https://github.com/tijs/atproto-storage",
       description: "Storage implementations for AT Protocol OAuth",
+      tags: ["atproto"],
     },
     {
       name: "fastlane-plugin-translate",
       url: "https://github.com/tijs/fastlane-plugin-translate",
       description: "Fastlane plugin for translating app metadata",
+      tags: ["ios"],
     },
     {
       name: "kipclip-cli",
       url: "https://github.com/tijs/kipclip-cli",
       description: "CLI tool for kipclip bookmarks on AT Protocol",
+      tags: ["atproto"],
     },
     {
       name: "oauth-client-deno",
       url: "https://github.com/tijs/oauth-client-deno",
       description: "OAuth client implementation for Deno",
+      tags: ["atproto"],
     },
     {
       name: "kipclip-appview",
       url: "https://github.com/tijs/kipclip-appview",
       description: "Custom appview for kipclip bookmarks on AT Protocol",
+      tags: ["atproto"],
+    },
+    {
+      name: "boulder",
+      url: "https://github.com/tijs/boulder",
+      description: "Bouldering session tracker for Pebble smartwatches",
+      tags: ["pebble"],
     },
   ];
   return (
@@ -132,6 +151,39 @@ export function OpenSourceSection() {
           line-height: 1.45;
         }
 
+        .project-tags {
+          display: flex;
+          gap: 0.35rem;
+          margin-top: 0.5rem;
+          flex-wrap: wrap;
+        }
+
+        .project-tag {
+          font-size: 0.65rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+          padding: 0.1rem 0.45rem;
+          border-radius: 5px;
+          color: white;
+        }
+
+        .project-tag-atproto {
+          background: #0085ff;
+        }
+
+        .project-tag-ios {
+          background: #5856d6;
+        }
+
+        .project-tag-macos {
+          background: #34c759;
+        }
+
+        .project-tag-pebble {
+          background: #ff6b35;
+        }
+
         .projects-header {
           display: flex;
           justify-content: space-between;
@@ -182,6 +234,18 @@ export function OpenSourceSection() {
               <div className="project-description">
                 {project.description}
               </div>
+              {project.tags && project.tags.length > 0 && (
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className={`project-tag project-tag-${tag}`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </a>
         ))}

@@ -38,21 +38,20 @@ export function AppsSection() {
     {
       name: "Floating Head",
       tagline: "Add some You to your video",
-      url:
-        "https://apps.apple.com/us/app/floating-head-show-yourself/id1565946661",
+      url: "https://floatinghead.app",
       description:
         "Create a floating webcam panel that stays visible on screen for screencasts, tutorials, and live streams on Mac",
       icon:
         "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/30/77/90/30779057-8bba-1143-a1f9-8f7800101a79/AppIcon-0-0-85-220-0-5-0-2x.png/540x540bb.jpg",
     },
     {
-      name: "Flexible",
-      tagline: "Movement timer",
-      url: "https://flexiblemovement.com",
-      description: "Track your (rehab) exercises on iOS",
+      name: "Boulder",
+      tagline: "Bouldering tracker for Pebble",
+      url: "https://apps.repebble.com/boulder_04b314f4955845468a2fe9a3",
+      description:
+        "Track bouldering sessions from your wrist. Log climbs by grade, mark as flash, top, or try, and review your progress",
       icon:
-        "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/85/75/bf/8575bf1c-7522-db8d-44bf-26f4cc5fdd18/AppIcon-0-0-1x_U007ephone-0-1-85-220.jpeg/540x540bb.jpg",
-      label: "archived",
+        "https://appstore-api.repebble.com/api/assets/icons/04b314f4955845468a2fe9a3/large/20585f4c-4150-41d1-a747-e4de4d4b23b4.png",
     },
   ];
 

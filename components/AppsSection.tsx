@@ -34,6 +34,7 @@ export function AppsSection() {
       url: "https://attic.photos/",
       description: "Back up your macOS Photos library to S3-compatible storage",
       icon: "https://attic.photos/attic-logo-transparent.png",
+      label: "beta",
     },
     {
       name: "Floating Head",

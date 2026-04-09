@@ -360,11 +360,14 @@ export default async function handler() {
     console.log("❌ NO BOOKS FOUND");
   }
 
+  const atprotoHandle = Deno.env.get("ATPROTO_HANDLE") || "tijs.org";
+
   const html = renderToString(
     <App
       posts={posts}
       books={bookData.books}
       checkins={checkins}
+      handle={atprotoHandle}
       pdsUrl={bookData.pdsUrl}
     />,
   );

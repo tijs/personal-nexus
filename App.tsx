@@ -43,11 +43,12 @@ interface AppProps {
   posts: Post[];
   books: Book[];
   checkins: Beacon[];
+  handle: string;
   pdsUrl?: string;
 }
 
 export function App(
-  { posts, books, checkins, pdsUrl }: AppProps,
+  { posts, books, checkins, handle, pdsUrl }: AppProps,
 ) {
   return (
     <div className="app">
@@ -148,7 +149,7 @@ export function App(
       <ProfileHeader />
       <main>
         <PostsSection posts={posts} />
-        <CheckinsSection checkins={checkins} />
+        <CheckinsSection checkins={checkins} handle={handle} />
         <BookSection books={books} pdsUrl={pdsUrl} />
         <AppsSection />
         <OpenSourceSection />

@@ -3,9 +3,10 @@ import type { Beacon } from "../types.ts";
 
 interface CheckinsSectionProps {
   checkins: Beacon[];
+  handle: string;
 }
 
-export function CheckinsSection({ checkins }: CheckinsSectionProps) {
+export function CheckinsSection({ checkins, handle }: CheckinsSectionProps) {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -23,6 +24,11 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
     }
   };
 
+  const getBeaconUrl = (uri: string) => {
+    const rkey = uri.split("/").pop();
+    return `https://www.beaconbits.app/beacons/${handle}/${rkey}`;
+  };
+
   return (
     <section aria-labelledby="checkins-heading">
       <style>
@@ -32,6 +38,19 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
           justify-content: space-between;
           align-items: baseline;
           margin-bottom: 1.25rem;
+        }
+
+        .checkins-link {
+          color: var(--color-text-muted);
+          text-decoration: none;
+          font-size: 0.85rem;
+          font-weight: 500;
+          transition: color var(--transition);
+        }
+
+        .checkins-link:hover {
+          color: var(--color-accent);
+          text-decoration: none;
         }
 
         .checkins-list {
@@ -47,15 +66,36 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
           }
         }
 
+        .checkin-item {
+          display: block;
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .checkin-item:hover {
+          text-decoration: none;
+        }
+
         .checkin-card {
           padding: 1.25rem;
           background: var(--color-bg-card);
           border-radius: var(--radius);
+          transition: all var(--transition);
           height: 100%;
           display: flex;
           flex-direction: column;
           box-shadow: var(--shadow-sm);
           border: 1px solid var(--color-border);
+        }
+
+        .checkin-item:hover .checkin-card {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
+          border-color: rgba(93, 45, 110, 0.15);
+        }
+
+        .checkin-item:active .checkin-card {
+          transform: translateY(0);
         }
 
         .checkin-venue {
@@ -91,24 +131,40 @@ export function CheckinsSection({ checkins }: CheckinsSectionProps) {
 
       <div className="checkins-header">
         <h2 id="checkins-heading">Recent Check-ins</h2>
+        <a
+          href={`https://www.beaconbits.app/passport/${handle}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="checkins-link"
+        >
+          View all check-ins &rarr;
+        </a>
       </div>
 
       <div className="checkins-list">
         {checkins.map((beacon) => (
-          <div key={beacon.uri} className="checkin-card">
-            <div className="checkin-venue">{beacon.value.venueName}</div>
-            {beacon.value.shout && (
-              <div className="checkin-shout">{beacon.value.shout}</div>
-            )}
-            <div className="checkin-date">
-              {formatDate(beacon.value.createdAt)}
-            </div>
-            {beacon.value.venueAddress && (
-              <div className="checkin-location">
-                {beacon.value.venueAddress}
+          <a
+            key={beacon.uri}
+            href={getBeaconUrl(beacon.uri)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="checkin-item"
+          >
+            <div className="checkin-card">
+              <div className="checkin-venue">{beacon.value.venueName}</div>
+              {beacon.value.shout && (
+                <div className="checkin-shout">{beacon.value.shout}</div>
+              )}
+              <div className="checkin-date">
+                {formatDate(beacon.value.createdAt)}
               </div>
-            )}
-          </div>
+              {beacon.value.venueAddress && (
+                <div className="checkin-location">
+                  {beacon.value.venueAddress}
+                </div>
+              )}
+            </div>
+          </a>
         ))}
       </div>
     </section>

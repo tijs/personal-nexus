@@ -11,15 +11,6 @@ export function AppsSection() {
         "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d0/9e/a3/d09ea387-6f70-63e3-7c55-57a286dd8c74/AppIcon-0-0-1x_U007epad-0-1-85-220.png/540x540bb.jpg",
     },
     {
-      name: "Drop Anchor",
-      tagline: "Location-based social checkins",
-      url: "https://dropanchor.app/",
-      description: "Social checkin app built on AT Protocol",
-      label: "alpha",
-      icon:
-        "https://res.cloudinary.com/dru3aznlk/image/upload/v1754747200/anchor-logo-transparent_nrw70y.png",
-    },
-    {
       name: "kipclip",
       tagline: "Find it, Kip it",
       url: "https://kipclip.com/",

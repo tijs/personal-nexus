@@ -18,12 +18,6 @@ export function OpenSourceSection() {
       tags: ["macos"],
     },
     {
-      name: "Anchor",
-      url: "https://github.com/dropanchorapp/Anchor",
-      description: "Location-based social network built on AT Protocol",
-      tags: ["atproto", "ios"],
-    },
-    {
       name: "atproto-to-fediverse",
       url: "https://github.com/tijs/atproto-to-fediverse",
       description: "Bridge AT Protocol content to the Fediverse",
@@ -33,12 +27,6 @@ export function OpenSourceSection() {
       name: "atproto-oauth",
       url: "https://github.com/tijs/atproto-oauth",
       description: "Framework-agnostic OAuth integration for AT Protocol",
-      tags: ["atproto"],
-    },
-    {
-      name: "anchor-appview",
-      url: "https://github.com/dropanchorapp/anchor-appview",
-      description: "Custom appview for Drop Anchor social checkins",
       tags: ["atproto"],
     },
     {

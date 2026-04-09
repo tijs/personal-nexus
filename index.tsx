@@ -361,6 +361,8 @@ export default async function handler() {
   }
 
   const atprotoHandle = Deno.env.get("ATPROTO_HANDLE") || "tijs.org";
+  const beaconBitsId = Deno.env.get("BEACONBITS_ID") ||
+    "aq7owa5y7ndc2hzjz37wy7ma";
 
   const html = renderToString(
     <App
@@ -368,6 +370,7 @@ export default async function handler() {
       books={bookData.books}
       checkins={checkins}
       handle={atprotoHandle}
+      beaconBitsId={beaconBitsId}
       pdsUrl={bookData.pdsUrl}
     />,
   );

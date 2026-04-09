@@ -4,9 +4,12 @@ import type { Beacon } from "../types.ts";
 interface CheckinsSectionProps {
   checkins: Beacon[];
   handle: string;
+  beaconBitsId: string;
 }
 
-export function CheckinsSection({ checkins, handle }: CheckinsSectionProps) {
+export function CheckinsSection(
+  { checkins, handle, beaconBitsId }: CheckinsSectionProps,
+) {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -26,7 +29,7 @@ export function CheckinsSection({ checkins, handle }: CheckinsSectionProps) {
 
   const getBeaconUrl = (uri: string) => {
     const rkey = uri.split("/").pop();
-    return `https://www.beaconbits.app/beacons/${handle}/${rkey}`;
+    return `https://www.beaconbits.app/beacons/${beaconBitsId}/${rkey}`;
   };
 
   return (

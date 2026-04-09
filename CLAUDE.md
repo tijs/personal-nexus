@@ -47,7 +47,7 @@ The application fetches data from multiple sources in parallel:
 - Resolves handles to DIDs and PDS URLs via Slingshot API
   (`slingshot.microcosm.blue`)
 - Fetches records from collections: `buzz.bookhive.book`,
-  `app.dropanchor.checkin`, `community.lexicon.location.address`
+  `app.beaconbits.beacon`
 - Constructs blob URLs for book cover images from PDS
 
 ### Caching Strategy

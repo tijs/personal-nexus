@@ -1,4 +1,5 @@
 import React from "https://esm.sh/react@18";
+import type { Beacon } from "./types.ts";
 import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { PostsSection } from "./components/PostsSection.tsx";
 import { CheckinsSection } from "./components/CheckinsSection.tsx";
@@ -38,86 +39,10 @@ interface Book {
   };
 }
 
-// New geo structure (coordinates as strings for DAG-CBOR compliance)
-interface Geo {
-  latitude: string;
-  longitude: string;
-  altitude?: string;
-  name?: string;
-}
-
-// New embedded address structure
-interface AddressEmbedded {
-  country: string; // Required
-  name?: string;
-  street?: string;
-  locality?: string;
-  region?: string;
-  postalCode?: string;
-}
-
-// Updated Checkin interface with both old and new format support
-interface Checkin {
-  uri: string;
-  cid: string;
-  value: {
-    text: string;
-    $type: "app.dropanchor.checkin";
-    category?: string;
-    createdAt: string;
-    categoryIcon?: string;
-    categoryGroup?: string;
-
-    // NEW format (embedded)
-    address?: AddressEmbedded;
-    geo?: Geo;
-
-    // OLD format (StrongRef) - for backward compatibility
-    addressRef?: {
-      cid: string;
-      uri: string;
-    };
-    coordinates?: {
-      latitude: number;
-      longitude: number;
-    };
-
-    image?: {
-      alt?: string;
-      thumb: {
-        $type: "blob";
-        ref: {
-          $link: string;
-        };
-        mimeType: string;
-        size: number;
-      };
-      fullsize: {
-        $type: "blob";
-        ref: {
-          $link: string;
-        };
-        mimeType: string;
-        size: number;
-      };
-    };
-  };
-}
-
-// Unified structure for display
-interface CheckinWithAddress {
-  checkin: Checkin;
-  address: AddressEmbedded; // Always normalized to embedded format
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
 interface AppProps {
   posts: Post[];
   books: Book[];
-  checkins: CheckinWithAddress[];
+  checkins: Beacon[];
   pdsUrl?: string;
 }
 
@@ -223,7 +148,7 @@ export function App(
       <ProfileHeader />
       <main>
         <PostsSection posts={posts} />
-        <CheckinsSection checkins={checkins} pdsUrl={pdsUrl} />
+        <CheckinsSection checkins={checkins} />
         <BookSection books={books} pdsUrl={pdsUrl} />
         <AppsSection />
         <OpenSourceSection />

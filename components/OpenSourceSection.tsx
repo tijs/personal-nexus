@@ -13,8 +13,7 @@ export function OpenSourceSection() {
     {
       name: "ladder",
       url: "https://github.com/tijs/ladder",
-      description:
-        "PhotoKit export helper for iCloud Photos backup",
+      description: "PhotoKit export helper for iCloud Photos backup",
       tags: ["macos"],
     },
     {
@@ -57,7 +56,7 @@ export function OpenSourceSection() {
       name: "kipclip-cli",
       url: "https://github.com/tijs/kipclip-cli",
       description: "CLI tool for kipclip bookmarks on AT Protocol",
-      tags: ["atproto"],
+      tags: ["atproto", "macos"],
     },
     {
       name: "oauth-client-deno",

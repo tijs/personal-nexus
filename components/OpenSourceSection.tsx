@@ -14,7 +14,7 @@ export function OpenSourceSection() {
       name: "ladder",
       url: "https://github.com/tijs/ladder",
       description:
-        "macOS CLI to export original photos and videos from Photos using PhotoKit",
+        "PhotoKit export helper for iCloud Photos backup",
       tags: ["macos"],
     },
     {

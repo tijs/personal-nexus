@@ -4,6 +4,7 @@ import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { PostsSection } from "./components/PostsSection.tsx";
 import { CheckinsSection } from "./components/CheckinsSection.tsx";
 import { BookSection } from "./components/BookSection.tsx";
+import { RpgCharacterSection } from "./components/RpgCharacterSection.tsx";
 import { AppsSection } from "./components/AppsSection.tsx";
 import { OpenSourceSection } from "./components/OpenSourceSection.tsx";
 import { ExternalLinks } from "./components/ExternalLinks.tsx";
@@ -156,6 +157,7 @@ export function App(
           beaconBitsId={beaconBitsId}
         />
         <BookSection books={books} pdsUrl={pdsUrl} />
+        <RpgCharacterSection />
         <AppsSection />
         <OpenSourceSection />
       </main>

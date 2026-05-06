@@ -414,6 +414,7 @@ export default async function handler() {
   </head>
   <body>
     ${html}
+    <script src="https://rpg.actor/js/rpg-actor-widget.js"></script>
     <script>try{if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!==0){fetch("https://counter.tijs.org/track?"+new URLSearchParams({site:"tijs",utcoffset:String(-(new Date().getTimezoneOffset()/60)),referrer:document.referrer,screen:screen.width+"x"+screen.height})).catch(function(){})};sessionStorage.setItem("_swa","1")}catch(e){}</script>
   </body>
 </html>`,

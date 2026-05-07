@@ -25,15 +25,7 @@ export function RpgCharacterSection() {
           text-decoration: none;
         }
 
-        .rpg-card {
-          background: var(--color-bg-card);
-          border-radius: var(--radius);
-          box-shadow: var(--shadow-sm);
-          border: 1px solid var(--color-border);
-          padding: 1.25rem;
-        }
-
-        .rpg-card rpg-actor-widget {
+        .rpg-widget-wrap rpg-actor-widget {
           display: block;
         }
       `}
@@ -52,10 +44,10 @@ export function RpgCharacterSection() {
       </div>
 
       <div
-        className="rpg-card"
+        className="rpg-widget-wrap"
         dangerouslySetInnerHTML={{
           __html:
-            `<rpg-actor-widget handle="tijs.org" system="reverie"></rpg-actor-widget>`,
+            `<rpg-actor-widget handle="tijs.org" did="did:plc:aq7owa5y7ndc2hzjz37wy7ma" system="reverie" bluesky="false" static></rpg-actor-widget>`,
         }}
       />
     </section>

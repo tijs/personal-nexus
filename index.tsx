@@ -325,7 +325,39 @@ async function fetchCheckins(): Promise<Beacon[]> {
   }
 }
 
-export default async function handler() {
+async function handleBlobProxy(did: string, cid: string): Promise<Response> {
+  try {
+    const pdsUrl = await resolvePDS(did);
+    const upstream = `${pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${
+      encodeURIComponent(did)
+    }&cid=${encodeURIComponent(cid)}`;
+    const res = await fetch(upstream);
+    if (!res.ok) {
+      return new Response(`upstream ${res.status}`, { status: res.status });
+    }
+    return new Response(res.body, {
+      status: 200,
+      headers: {
+        "Content-Type": res.headers.get("Content-Type") ||
+          "application/octet-stream",
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+  } catch (e) {
+    console.error("blob proxy error:", e);
+    return new Response("blob fetch failed", { status: 502 });
+  }
+}
+
+export default async function handler(req: Request) {
+  const url = new URL(req.url);
+  const blobMatch = url.pathname.match(
+    /^\/blob\/(did:[^/]+)\/([^/]+)$/,
+  );
+  if (blobMatch) {
+    return handleBlobProxy(blobMatch[1], blobMatch[2]);
+  }
+
   console.log("=== Handler starting ===");
   const [posts, bookData, checkins] = await Promise.all([
     fetchBlogPosts(),
@@ -371,7 +403,6 @@ export default async function handler() {
       checkins={checkins}
       handle={atprotoHandle}
       beaconBitsId={beaconBitsId}
-      pdsUrl={bookData.pdsUrl}
     />,
   );
 

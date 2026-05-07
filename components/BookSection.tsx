@@ -20,10 +20,9 @@ interface Book {
 
 interface BookSectionProps {
   books: Book[];
-  pdsUrl?: string;
 }
 
-export function BookSection({ books, pdsUrl }: BookSectionProps) {
+export function BookSection({ books }: BookSectionProps) {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -42,7 +41,7 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
   };
 
   const getCoverImageUrl = (book: Book): string | null => {
-    if (!book.value.cover?.ref || !pdsUrl) {
+    if (!book.value.cover?.ref) {
       return null;
     }
 
@@ -59,10 +58,7 @@ export function BookSection({ books, pdsUrl }: BookSectionProps) {
     }
 
     const did = book.uri.split("/")[2];
-    const blobUrl =
-      `${pdsUrl}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${cid}`;
-    console.log(`Constructing blob URL for ${book.value.title}: ${blobUrl}`);
-    return blobUrl;
+    return `/blob/${did}/${cid}`;
   };
 
   const getStatusLabel = (status: string) => {

@@ -46,11 +46,10 @@ interface AppProps {
   checkins: Beacon[];
   handle: string;
   beaconBitsId: string;
-  pdsUrl?: string;
 }
 
 export function App(
-  { posts, books, checkins, handle, beaconBitsId, pdsUrl }: AppProps,
+  { posts, books, checkins, handle, beaconBitsId }: AppProps,
 ) {
   return (
     <div className="app">
@@ -156,7 +155,7 @@ export function App(
           handle={handle}
           beaconBitsId={beaconBitsId}
         />
-        <BookSection books={books} pdsUrl={pdsUrl} />
+        <BookSection books={books} />
         <RpgCharacterSection />
         <AppsSection />
         <OpenSourceSection />

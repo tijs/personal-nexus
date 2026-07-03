@@ -329,4 +329,6 @@ it into the HTML page or by making an API request for it.
      `export default app.fetch // This is the entry point for HTTP vals`
 
 <!-- kiem -->
-This repo is Kiem project `proj/personal_nexus`. Run `kiem todos` / `kiem notes` for project state, and record progress with `kiem note add` / `kiem todo check`.
+
+This repo is Kiem project `proj/personal_nexus`. Run `kiem todos` / `kiem notes`
+for project state, and record progress with `kiem note add` / `kiem todo check`.

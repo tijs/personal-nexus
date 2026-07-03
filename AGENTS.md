@@ -327,3 +327,6 @@ it into the HTML page or by making an API request for it.
    - `fetch` handler is the entry point for HTTP vals
    - Run the Hono app with
      `export default app.fetch // This is the entry point for HTTP vals`
+
+<!-- kiem -->
+This repo is Kiem project `proj/personal_nexus`. Run `kiem todos` / `kiem notes` for project state, and record progress with `kiem note add` / `kiem todo check`.

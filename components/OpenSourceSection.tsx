@@ -1,8 +1,16 @@
-import React from "https://esm.sh/react@18";
+import * as React from "https://esm.sh/react@18";
 import { KofiSupport } from "./KofiSupport.tsx";
 
 export function OpenSourceSection() {
+  void React;
   const projects = [
+    {
+      name: "Mei",
+      url: "https://github.com/tijs/mei",
+      description:
+        "Native Swift/MLX, OpenAI-compatible inference server for Apple Silicon",
+      tags: ["macos"],
+    },
     {
       name: "attic",
       url: "https://github.com/tijs/attic",
@@ -218,9 +226,7 @@ export function OpenSourceSection() {
               <div className="project-name">
                 <span>{project.name}</span>
               </div>
-              <div className="project-description">
-                {project.description}
-              </div>
+              <div className="project-description">{project.description}</div>
               {project.tags && project.tags.length > 0 && (
                 <div className="project-tags">
                   {project.tags.map((tag) => (
